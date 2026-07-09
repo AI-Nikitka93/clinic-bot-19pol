@@ -1,5 +1,20 @@
 [project]
 name = "app"
 version = "0.1.0"
-dependencies = [ "sqlalchemy[asyncio]", "asyncpg", "alembic", "pydantic-settings", "redis", "aiogram", "fastapi", "uvicorn", "sqladmin", "itsdangerous", "jinja2" ]
+dependencies = [
+    "sqlalchemy[asyncio]",
+    "psycopg[binary]",
+    "alembic",
+    "pydantic-settings",
+    "redis",
+    "aiogram",
+    "fastapi",
+    "uvicorn",
+    "sqladmin",
+    "itsdangerous",
+    "jinja2",
+    "beautifulsoup4",
+    "httpx",
+    "python-multipart"
+]
 requires-python = "~=3.12.0"
