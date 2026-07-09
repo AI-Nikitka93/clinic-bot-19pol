@@ -1,6 +1,7 @@
 from aiogram import Router, types, F
 from aiogram.filters import CommandStart, Command
 from aiogram.fsm.context import FSMContext
+from aiogram.utils.keyboard import InlineKeyboardBuilder
 from sqlalchemy import select
 from app.core.database import AsyncSessionLocal
 from app.models.models import User, Ticket, Doctor, Specialty
@@ -57,33 +58,93 @@ async def menu_subscriptions(message: types.Message):
 async def menu_tickets(message: types.Message):
     async with AsyncSessionLocal() as session:
         result = await session.execute(
-            select(Ticket, Doctor, Specialty)
-            .join(Doctor, Ticket.doctor_id == Doctor.id)
-            .join(Specialty, Doctor.specialty_id == Specialty.id)
+            select(Specialty)
+            .join(Doctor)
+            .join(Ticket)
             .where(Ticket.status == "available")
-            .order_by(Specialty.name, Doctor.full_name, Ticket.date, Ticket.time)
-            .limit(100)
+            .distinct()
+            .order_by(Specialty.name)
         )
-        rows = result.all()
-        if not rows:
+        specialties = result.scalars().all()
+        if not specialties:
             await message.answer("Свободных талонов в данный момент нет. Попробуйте проверить позже.", reply_markup=get_main_menu_kb())
             return
             
-        by_spec = {}
-        for ticket, doctor, specialty in rows:
-            if specialty.name not in by_spec:
-                by_spec[specialty.name] = {}
-            if doctor.full_name not in by_spec[specialty.name]:
-                by_spec[specialty.name][doctor.full_name] = []
-            by_spec[specialty.name][doctor.full_name].append(f"{ticket.date.strftime('%d.%m')} в {ticket.time.strftime('%H:%M')}")
+        from app.bot.keyboards import get_view_specialties_kb
+        await message.answer("Выберите направление для просмотра талонов:", reply_markup=get_view_specialties_kb(specialties))
+
+@router.callback_query(F.data.startswith("viewspec_"))
+async def process_view_specialty(callback: types.CallbackQuery):
+    if callback.data == "viewspec_back":
+        async with AsyncSessionLocal() as session:
+            result = await session.execute(
+                select(Specialty)
+                .join(Doctor)
+                .join(Ticket)
+                .where(Ticket.status == "available")
+                .distinct()
+                .order_by(Specialty.name)
+            )
+            specialties = result.scalars().all()
+            if not specialties:
+                await callback.message.edit_text("Свободных талонов в данный момент нет.")
+                return
+                
+            from app.bot.keyboards import get_view_specialties_kb
+            await callback.message.edit_text("Выберите направление для просмотра талонов:", reply_markup=get_view_specialties_kb(specialties))
+        return
+
+    spec_id = int(callback.data.split("_")[1])
+    async with AsyncSessionLocal() as session:
+        spec_res = await session.execute(select(Specialty).where(Specialty.id == spec_id))
+        specialty = spec_res.scalar_one_or_none()
+        if not specialty:
+            await callback.answer("Направление не найдено.")
+            return
             
-        text = "📅 **Актуальные свободные талоны:**\n\n"
-        for spec_name, docs_dict in by_spec.items():
-            text += f"🩺 **{spec_name}**:\n"
-            for doc_name, slots in docs_dict.items():
-                text += f"  👨‍⚕️ {doc_name}:\n"
-                text += f"     Талоны: {', '.join(slots[:6])}\n"
+        result = await session.execute(
+            select(Ticket, Doctor)
+            .join(Doctor, Ticket.doctor_id == Doctor.id)
+            .where(Doctor.specialty_id == spec_id, Ticket.status == "available")
+            .order_by(Doctor.full_name, Ticket.date, Ticket.time)
+        )
+        rows = result.all()
+        if not rows:
+            await callback.message.edit_text(f"Свободных талонов по направлению «{specialty.name}» уже нет.")
+            return
+            
+        by_doc = {}
+        for ticket, doctor in rows:
+            if doctor.full_name not in by_doc:
+                by_doc[doctor.full_name] = []
+            by_doc[doctor.full_name].append(f"{ticket.date.strftime('%d.%m')} в {ticket.time.strftime('%H:%M')}")
+            
+        text = f"🩺 **Свободные талоны: {specialty.name}**\n\n"
+        for doc_name, slots in by_doc.items():
+            text += f"👨‍⚕️ {doc_name}:\n"
+            text += f"   Талоны: {', '.join(slots[:10])}\n"
+            if len(slots) > 10:
+                text += f"   (и еще {len(slots) - 10} талонов)\n"
             text += "\n"
             
         text += "🔗 Записаться на сайте: http://self.19crp.by:8028/ticket/"
-        await message.answer(text, reply_markup=get_main_menu_kb())
+        
+        # Build back and other specialties menu
+        active_specs_res = await session.execute(
+            select(Specialty)
+            .join(Doctor)
+            .join(Ticket)
+            .where(Ticket.status == "available")
+            .distinct()
+            .order_by(Specialty.name)
+        )
+        active_specialties = active_specs_res.scalars().all()
+        
+        builder = InlineKeyboardBuilder()
+        for sp in active_specialties:
+            if sp.id != spec_id:
+                builder.button(text=sp.name, callback_data=f"viewspec_{sp.id}")
+        builder.button(text="🔙 К выбору направлений", callback_data="viewspec_back")
+        builder.adjust(1)
+        
+        await callback.message.edit_text(text, reply_markup=builder.as_markup())

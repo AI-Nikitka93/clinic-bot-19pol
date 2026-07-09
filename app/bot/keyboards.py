@@ -54,3 +54,10 @@ def get_main_menu_kb() -> ReplyKeyboardMarkup:
         ]
     ]
     return ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
+
+def get_view_specialties_kb(specialties) -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    for sp in specialties:
+        builder.button(text=sp.name, callback_data=f"viewspec_{sp.id}")
+    builder.adjust(1)
+    return builder.as_markup()
