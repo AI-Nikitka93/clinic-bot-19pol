@@ -17,8 +17,19 @@ logger = logging.getLogger(__name__)
 async def run_scraper_job():
     logger.info("Starting scraper job...")
     redis_url = settings.REDIS_URL
-    redis_client = redis.from_url(redis_url, decode_responses=True)
-    
+    redis_client = None
+    if redis_url:
+        try:
+            redis_client = redis.from_url(redis_url, decode_responses=True)
+            # Test ping to verify connection
+            await redis_client.ping()
+            logger.info("Connected to Redis successfully.")
+        except Exception as re_err:
+            logger.warning(f"Redis connection failed: {re_err}. Proceeding without Redis.")
+            redis_client = None
+    else:
+        logger.info("REDIS_URL not provided. Proceeding without Redis.")
+        
     bot_token = settings.BOT_TOKEN
     bot = Bot(token=bot_token) if bot_token else None
     
@@ -183,15 +194,24 @@ async def run_scraper_job():
                             logger.error(f"Failed to send notification to {user.telegram_id}: {send_err}")
 
         # Process diff and update state in Redis for backward compatibility
-        logger.info("Processing Redis state...")
-        await process_diff_and_notify(redis_client, new_state)
+        if redis_client:
+            try:
+                logger.info("Processing Redis state...")
+                await process_diff_and_notify(redis_client, new_state)
+            except Exception as redis_err:
+                logger.warning(f"Failed to process Redis state: {redis_err}")
+                
         logger.info("Scraper job finished successfully!")
         
     except Exception as e:
         logger.error(f"Error in scraper job: {e}")
         raise e
     finally:
-        await redis_client.aclose()
+        if redis_client:
+            try:
+                await redis_client.aclose()
+            except Exception:
+                pass
         if bot:
             await bot.session.close()
 
