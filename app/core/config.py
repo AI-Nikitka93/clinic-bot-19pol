@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     @classmethod
     def fix_database_url(cls, v):
         if v and isinstance(v, str) and v.startswith("postgresql://"):
-            return v.replace("postgresql://", "postgresql+asyncpg://", 1)
+            return v.replace("postgresql://", "postgresql+psycopg://", 1)
         return v
 
     class Config:
