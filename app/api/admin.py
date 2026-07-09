@@ -31,7 +31,7 @@ class UserAdmin(ModelView, model=User):
     icon = "fa-solid fa-user"
 
 class SourceAdmin(ModelView, model=Source):
-    column_list = [Source.id, Source.name, Source.url, Source.is_active]
+    column_list = [Source.id, Source.name, Source.base_url, Source.is_active]
     name = "Source"
     name_plural = "Sources"
     icon = "fa-solid fa-globe"
