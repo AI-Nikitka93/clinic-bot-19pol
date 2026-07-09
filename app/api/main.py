@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, HTTPException, status
 from contextlib import asynccontextmanager
 from sqladmin import Admin
 from app.core.database import engine
@@ -8,6 +8,7 @@ from app.api.admin import (
 )
 from app.bot.main import bot, dp, set_webhook
 from aiogram.types import Update
+from app.scraper.tasks import run_scraper_job
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -30,6 +31,22 @@ admin.add_view(HistoryLogAdmin)
 @app.get("/health")
 async def health_check():
     return {"status": "ok"}
+
+@app.get("/api/cron/scrape")
+async def trigger_scrape(key: str):
+    if key != "5YkVoxpU9cGjlUiEOcT98uDghR38i4EQ3RjWFtdFv+k=":
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid cron key"
+        )
+    try:
+        await run_scraper_job()
+        return {"status": "success", "message": "Scraper job completed successfully"}
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=str(e)
+        )
 
 @app.post("/api/webhook")
 async def telegram_webhook(request: Request):

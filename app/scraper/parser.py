@@ -1,4 +1,5 @@
 import httpx
+import asyncio
 from bs4 import BeautifulSoup
 import logging
 from typing import List, Dict, Any
@@ -108,15 +109,36 @@ async def get_tickets_for_doctor(client: httpx.AsyncClient, doctor_url: str) -> 
 
 async def scrape_all_tickets() -> Dict[str, Any]:
     state = {}
+    sem = asyncio.Semaphore(5)  # Limit concurrent requests to prevent clinic website block
+    
     async with httpx.AsyncClient(timeout=30.0) as client:
         specialties = await get_specialties(client)
+        
+        async def fetch_doctor_tickets(spec_name, doc):
+            async with sem:
+                try:
+                    tix = await get_tickets_for_doctor(client, doc["url"])
+                    return spec_name, doc["name"], doc["id"], tix
+                except Exception as e:
+                    logger.error(f"Error fetching tickets for doctor {doc['name']}: {e}")
+                    return spec_name, doc["name"], doc["id"], []
+
+        tasks = []
         for spec in specialties:
-            docs = await get_doctors_for_specialty(client, spec["url"])
             state[spec["name"]] = {"id": spec["id"], "doctors": {}}
-            for doc in docs:
-                tix = await get_tickets_for_doctor(client, doc["url"])
-                state[spec["name"]]["doctors"][doc["name"]] = {
-                    "id": doc["id"],
-                    "tickets": {t["id"]: f"{t['date']} {t['time']}" for t in tix}
-                }
+            try:
+                docs = await get_doctors_for_specialty(client, spec["url"])
+                for doc in docs:
+                    tasks.append(fetch_doctor_tickets(spec["name"], doc))
+            except Exception as e:
+                logger.error(f"Error fetching doctors for specialty {spec['name']}: {e}")
+                
+        results = await asyncio.gather(*tasks)
+        
+        for spec_name, doc_name, doc_id, tix in results:
+            state[spec_name]["doctors"][doc_name] = {
+                "id": doc_id,
+                "tickets": {t["id"]: f"{t['date']} {t['time']}" for t in tix}
+            }
+            
     return state
