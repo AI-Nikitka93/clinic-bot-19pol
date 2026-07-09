@@ -110,10 +110,13 @@ def main():
             print("  Не удалось подключиться к VPN (таймаут соединения).")
             # Выведем лог openvpn для диагностики
             if os.path.exists(log_file):
-                with open(log_file, "r") as lf:
+                try:
+                    log_content = subprocess.check_output(["sudo", "cat", log_file]).decode('utf-8', errors='ignore')
                     print("--- OPENVPN LOG ---")
-                    print(lf.read()[-300:])
+                    print(log_content[-500:])
                     print("-------------------")
+                except Exception as le:
+                    print(f"Ошибка чтения лога: {le}")
             # Убиваем процесс
             subprocess.run(["sudo", "killall", "openvpn"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             results.append({"ip": ip, "country": country, "vpn_ip": "Failed", "vpn_country": "", "clinic": "N/A"})
