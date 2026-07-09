@@ -43,7 +43,7 @@ jobs:
       - name: Verify IP and Location
         run: |
           echo "=== OPENVPN LOGS ==="
-          cat openvpn.log || true
+          sudo cat openvpn.log || true
           echo "====================="
           echo "Current Public IP:"
           curl -s https://ifconfig.me || echo "Failed to get IP"
