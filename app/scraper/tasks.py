@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import os
+import time
 from datetime import datetime
 import redis.asyncio as redis
 from sqlalchemy import select, update
@@ -14,22 +15,18 @@ from app.core.config import settings
 
 logger = logging.getLogger(__name__)
 
-async def run_scraper_job():
-    logger.info("Starting scraper job...")
+async def run_single_scrape():
+    logger.info("Starting single scrape iteration...")
     redis_url = settings.REDIS_URL
     redis_client = None
     if redis_url:
         try:
             redis_client = redis.from_url(redis_url, decode_responses=True)
-            # Test ping to verify connection
             await redis_client.ping()
-            logger.info("Connected to Redis successfully.")
         except Exception as re_err:
             logger.warning(f"Redis connection failed: {re_err}. Proceeding without Redis.")
             redis_client = None
-    else:
-        logger.info("REDIS_URL not provided. Proceeding without Redis.")
-        
+            
     bot_token = settings.BOT_TOKEN
     bot = Bot(token=bot_token) if bot_token else None
     
@@ -98,7 +95,6 @@ async def run_scraper_job():
             booked_ids = active_ticket_ids - parsed_ticket_ids
             if booked_ids:
                 logger.info(f"Booking {len(booked_ids)} tickets...")
-                # SQLAlchemy in_ list limit check - typically 1000 items is fine, but we chunk it just in case
                 booked_list = list(booked_ids)
                 chunk_size = 500
                 for i in range(0, len(booked_list), chunk_size):
@@ -116,7 +112,6 @@ async def run_scraper_job():
             
             if new_ids:
                 logger.info(f"Found {len(new_ids)} new tickets. Updating status...")
-                # Query existing tickets in database in chunks
                 new_list = list(new_ids)
                 existing_tickets = {}
                 chunk_size = 500
@@ -160,7 +155,6 @@ async def run_scraper_job():
             if bot and new_tickets_to_notify:
                 logger.info(f"Notifying subscribers about {len(new_tickets_to_notify)} new tickets...")
                 for nt in new_tickets_to_notify:
-                    # Find doctor and specialty names
                     result = await session.execute(
                         select(Doctor, Specialty)
                         .join(Specialty)
@@ -171,7 +165,6 @@ async def run_scraper_job():
                         continue
                     doctor, specialty = row
                     
-                    # Find matching subscriptions
                     stmt = select(Subscription, User).join(User).where(
                         Subscription.source_id == source.id,
                         (Subscription.specialty_id == None) | (Subscription.specialty_id == specialty.id),
@@ -193,7 +186,6 @@ async def run_scraper_job():
                         except Exception as send_err:
                             logger.error(f"Failed to send notification to {user.telegram_id}: {send_err}")
 
-        # Process diff and update state in Redis for backward compatibility
         if redis_client:
             try:
                 logger.info("Processing Redis state...")
@@ -201,19 +193,67 @@ async def run_scraper_job():
             except Exception as redis_err:
                 logger.warning(f"Failed to process Redis state: {redis_err}")
                 
-        logger.info("Scraper job finished successfully!")
+        logger.info("Single scrape iteration finished successfully.")
         
     except Exception as e:
-        logger.error(f"Error in scraper job: {e}")
+        logger.error(f"Error in single scrape iteration: {e}")
         raise e
     finally:
         if redis_client:
             try:
                 await redis_client.aclose()
-            except Exception:
-                pass
+            except Exception as close_err:
+                logger.debug(f"Redis close error: {close_err}")
         if bot:
             await bot.session.close()
+
+async def run_scraper_job():
+    logger.info("Starting scraper loop task...")
+    redis_url = settings.REDIS_URL
+    redis_client = None
+    if redis_url:
+        try:
+            redis_client = redis.from_url(redis_url, decode_responses=True)
+            await redis_client.ping()
+        except Exception as re_err:
+            logger.warning(f"Redis connection failed: {re_err}")
+            redis_client = None
+
+    lock_key = "scraper_running_lock"
+    if redis_client:
+        acquired = await redis_client.set(lock_key, "1", ex=280, nx=True)
+        if not acquired:
+            logger.info("Another scraper instance is actively running. Exiting.")
+            await redis_client.aclose()
+            return
+            
+    try:
+        start_time = time.time()
+        iteration = 0
+        while time.time() - start_time < 270:
+            if iteration > 0:
+                logger.info("Waiting 120 seconds for the next scrape iteration...")
+                await asyncio.sleep(120)
+                
+            logger.info(f"--- Scraper Iteration {iteration + 1} ---")
+            if redis_client:
+                await redis_client.expire(lock_key, 280)
+                
+            try:
+                await run_single_scrape()
+            except Exception as e:
+                logger.error(f"Error in iteration {iteration + 1}: {e}")
+                
+            iteration += 1
+            
+    finally:
+        if redis_client:
+            try:
+                await redis_client.delete(lock_key)
+                await redis_client.aclose()
+            except Exception as close_err:
+                logger.debug(f"Redis cleanup error: {close_err}")
+        logger.info("Scraper loop task finished.")
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
