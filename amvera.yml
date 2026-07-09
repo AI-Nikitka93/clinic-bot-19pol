@@ -1,0 +1,12 @@
+# Amvera deployment configuration for Clinic Ticket Scraper
+meta:
+  environment: python
+  toolchain: pip
+
+build:
+  # Use the project's Dockerfile for building the image
+  dockerfile: Dockerfile
+
+run:
+  # Override the default API startup command with the scraper daemon
+  command: python -m app.scraper.tasks_loop

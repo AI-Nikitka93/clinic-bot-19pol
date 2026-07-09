@@ -2,8 +2,14 @@ __pycache__/
 *.py[cod]
 *$py.class
 venv/
+.venv/
 .env
+.env.*
 .pytest_cache/
 alembic.ini
-
-.vercel
+.vercel/
+.wrangler/
+deploy.log
+doctor_page.html
+test_install/
+client.ovpn

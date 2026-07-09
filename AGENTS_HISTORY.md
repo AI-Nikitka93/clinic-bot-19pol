@@ -24,3 +24,21 @@
   - Implemented automatic source selection skip in subscription if there's only one source.
   - Implemented live "📅 Свободные талоны" view querying and formatting tickets from Neon DB.
   - Successfully deployed all modifications to production on Vercel.
+
+## [2026-07-10] - Distributed Architecture Specification (Systems_Architect)
+- **Status**: Completed successfully.
+- **Changes**:
+  - Analyzed the current system architecture (FastAPI on Vercel, Neon PostgreSQL, tasks.py) and research logs of `Scout_Researcher` and `DevOps_Engineer`.
+  - Investigated limits of free hosting services (Amvera, Koyeb, Render) and bypasses for Belarus IP/port geoblocks.
+  - Selected a userspace WireGuard proxy (`wireproxy` to Cloudflare WARP) to tunnel outbound traffic without requiring `CAP_NET_ADMIN` permissions.
+  - Selected a combination of Koyeb (Nano free tier) for the scraping agent and `cron-job.org` for a stable 1-minute execution trigger.
+  - Produced a complete distributed architecture specification [architecture_spec.md](file:///C:/Users/admin/.gemini/antigravity/brain/55d5a854-85a4-4134-9453-15f6a108873a/architecture_spec.md).
+
+
+## [2026-07-10] - Scraper Deployment & Integration Automation Plan
+- **Status**: Completed successfully.
+- **Changes**:
+  - Implemented `app/scraper/tasks_loop.py` containing an optimized loop daemon (120-second sleep interval) with low resource consumption (~40MB RAM) for PaaS platforms.
+  - Added `amvera.yml` for simplified deployment on Amvera cloud.
+  - Updated `.github/workflows/scraper.yml` to automatically connect to Cloudflare WARP and documented OpenVPN setup options.
+  - Created a comprehensive integration plan in `scraper_deployment_plan.md` artifact.

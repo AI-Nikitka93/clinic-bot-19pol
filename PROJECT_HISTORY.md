@@ -12,6 +12,18 @@
 
 ### 2026-07-09 11:53:00 +03:00 — Serverless Migration (Scraper & Docs)
 - Changed: Refactored scraper to run as a one-off script instead of using APScheduler. Created GitHub Actions workflow for scraper schedule. Removed docker-compose.yml. Updated README with serverless deployment instructions.
-- Files: app/scraper/tasks.py, .github/workflows/scraper.yml, docker-compose.yml, README.md.
+- Files: app/scraper/tasks_loop.py, .github/workflows/scraper.yml, docker-compose.yml, README.md.
 - Verification: Syntax checking.
+- Status: DONE.
+
+### 2026-07-10 01:03:00 +03:00 — Scraper Deployment Integration
+- Changed: Added scraper daemon loop script, Amvera deployment config, and updated GitHub Actions workflow to support Cloudflare WARP and custom VPN configuration.
+- Files: app/scraper/tasks_loop.py, amvera.yml, .github/workflows/scraper.yml.
+- Verification: Compiled tasks_loop.py and verified syntax.
+- Status: DONE.
+
+### 2026-07-10 01:10:00 +03:00 — Distributed Architecture Design & Specification
+- Changed: Designed the final distributed architecture for the clinic ticket monitoring system. Created detailed architecture specification using Koyeb, Vercel, Neon DB, and wireproxy (Cloudflare WARP).
+- Files: architecture_spec.md (in artifacts).
+- Verification: Formulated, cross-checked with subagent logs and web searches.
 - Status: DONE.

@@ -2,8 +2,9 @@ name: Scraper
 
 on:
   schedule:
+    # Fallback schedule: every 5 minutes (standard GitHub minimum)
     - cron: '*/5 * * * *'
-  workflow_dispatch:
+  workflow_dispatch: # Allows triggering from FastAPI/Vercel cron and manual triggers
 
 jobs:
   run-scraper:
@@ -11,6 +12,40 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+
+      - name: Set up Python for VPN fetcher
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install requests for VPN fetcher
+        run: pip install requests
+
+      - name: Fetch Dynamic Belarus/Russia VPN Config
+        run: python get_by_vpn.py
+
+      - name: Create VPN Auth File
+        run: |
+          echo "vpn" > auth.txt
+          echo "vpn" >> auth.txt
+
+      - name: Install OpenVPN
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openvpn resolvconf
+
+      - name: Connect to VPN
+        run: |
+          sudo openvpn --config client.ovpn --auth-user-pass auth.txt --daemon
+          # Ожидание поднятия интерфейса и обновления маршрутов
+          sleep 12
+
+      - name: Verify IP and Location
+        run: |
+          echo "Current Public IP:"
+          curl -s https://ifconfig.me || echo "Failed to get IP"
+          echo "IP Details:"
+          curl -s ipinfo.io || echo "Failed to get location details"
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -30,3 +65,8 @@ jobs:
           REDIS_URL: ${{ secrets.REDIS_URL }}
         run: |
           python -m app.scraper.tasks
+
+      - name: Disconnect VPN
+        if: always()
+        run: |
+          sudo killall openvpn || true

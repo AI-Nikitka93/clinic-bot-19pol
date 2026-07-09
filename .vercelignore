@@ -1,0 +1,7 @@
+.venv/
+.git/
+__pycache__/
+test_install/
+*.pyc
+.env
+.vercel/
