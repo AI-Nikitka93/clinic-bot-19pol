@@ -45,6 +45,15 @@ def main():
     servers.sort(key=lambda x: (x['CountryShort'] == 'BY', x['Score'], -x['Ping']), reverse=True)
     
     # Берем топ-12 серверов для теста
+    # Получаем исходный IP ранера до подключения VPN
+    try:
+        r_start = requests.get("https://ifconfig.me", timeout=5.0)
+        default_ip = r_start.text.strip()
+        print(f"Исходный IP ранера: {default_ip}")
+    except Exception as e:
+        print(f"Не удалось получить исходный IP: {e}")
+        default_ip = None
+
     test_servers = servers[:12]
     print(f"Выбрано {len(test_servers)} серверов для тестирования.")
     
@@ -82,7 +91,9 @@ def main():
             try:
                 ip_resp = requests.get("https://ifconfig.me", timeout=2.0)
                 current_ip = ip_resp.text.strip()
-                # Если IP не совпадает с дефолтным (или просто получили ответ через туннель)
+                if default_ip and current_ip == default_ip:
+                    # IP еще не изменился
+                    continue
                 # Для надежности проверим ipinfo
                 info_resp = requests.get("https://ipinfo.io/json", timeout=2.0)
                 info = info_resp.json()
