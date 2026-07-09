@@ -9,6 +9,8 @@ from app.api.admin import (
 from app.bot.main import bot, dp, set_webhook
 from aiogram.types import Update
 from app.scraper.tasks import run_scraper_job
+import os
+import httpx
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -39,14 +41,40 @@ async def trigger_scrape(key: str):
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid cron key"
         )
-    try:
-        await run_scraper_job()
-        return {"status": "success", "message": "Scraper job completed successfully"}
-    except Exception as e:
+        
+    github_token = os.environ.get("GITHUB_TOKEN")
+    if not github_token:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=str(e)
+            detail="GITHUB_TOKEN is not configured on server"
         )
+        
+    # Trigger workflow_dispatch in GitHub Actions
+    url = "https://api.github.com/repos/AI-Nikitka93/clinic-bot-19pol/actions/workflows/scraper.yml/dispatches"
+    headers = {
+        "Authorization": f"Bearer {github_token}",
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28",
+        "User-Agent": "FastAPI-App"
+    }
+    data = {
+        "ref": "master"
+    }
+    
+    async with httpx.AsyncClient() as client:
+        try:
+            resp = await client.post(url, headers=headers, json=data, timeout=10.0)
+            if resp.status_code != 204:
+                raise HTTPException(
+                    status_code=status.HTTP_502_BAD_GATEWAY,
+                    detail=f"GitHub API returned {resp.status_code}: {resp.text}"
+                )
+            return {"status": "success", "message": "Scraper workflow triggered successfully on GitHub Actions"}
+        except httpx.RequestError as e:
+            raise HTTPException(
+                status_code=status.HTTP_502_BAD_GATEWAY,
+                detail=f"Failed to connect to GitHub API: {str(e)}"
+            )
 
 @app.post("/api/webhook")
 async def telegram_webhook(request: Request):
