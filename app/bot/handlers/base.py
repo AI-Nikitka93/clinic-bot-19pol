@@ -120,30 +120,26 @@ async def process_view_specialty(callback: types.CallbackQuery):
             by_doc[doctor.full_name].append(f"{ticket.date.strftime('%d.%m')} в {ticket.time.strftime('%H:%M')}")
             
         text = f"🩺 **Свободные талоны: {specialty.name}**\n\n"
-        for doc_name, slots in by_doc.items():
+        
+        # Limit to 8 doctors to prevent Telegram MESSAGE_TOO_LONG error
+        doc_names = list(by_doc.keys())
+        visible_docs = doc_names[:8]
+        
+        for doc_name in visible_docs:
+            slots = by_doc[doc_name]
             text += f"👨‍⚕️ {doc_name}:\n"
-            text += f"   Талоны: {', '.join(slots[:10])}\n"
-            if len(slots) > 10:
-                text += f"   (и еще {len(slots) - 10} талонов)\n"
+            text += f"   Талоны: {', '.join(slots[:5])}\n"
+            if len(slots) > 5:
+                text += f"   (и еще {len(slots) - 5} талонов)\n"
             text += "\n"
+            
+        if len(doc_names) > 8:
+            text += f"ℹ️ Показано 8 врачей из {len(doc_names)}. Полный список доступен при записи.\n\n"
             
         text += "🔗 Записаться на сайте: http://self.19crp.by:8028/ticket/"
         
-        # Build back and other specialties menu
-        active_specs_res = await session.execute(
-            select(Specialty)
-            .join(Doctor)
-            .join(Ticket)
-            .where(Ticket.status == "available")
-            .distinct()
-            .order_by(Specialty.name)
-        )
-        active_specialties = active_specs_res.scalars().all()
-        
+        # Build clean keyboard with only "Back" button to reduce message payload size
         builder = InlineKeyboardBuilder()
-        for sp in active_specialties:
-            if sp.id != spec_id:
-                builder.button(text=sp.name, callback_data=f"viewspec_{sp.id}")
         builder.button(text="🔙 К выбору направлений", callback_data="viewspec_back")
         builder.adjust(1)
         
