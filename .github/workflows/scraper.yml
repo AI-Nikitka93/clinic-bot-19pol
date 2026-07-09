@@ -50,6 +50,11 @@ jobs:
           echo "IP Details:"
           curl -s ipinfo.io || echo "Failed to get location details"
 
+      - name: Verify Clinic Connection
+        run: |
+          echo "Testing connection to clinic site..."
+          curl -I --connect-timeout 8 http://self.19crp.by:8028/ticket/ || echo "Failed to connect to clinic"
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
