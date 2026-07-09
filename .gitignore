@@ -13,3 +13,5 @@ deploy.log
 doctor_page.html
 test_install/
 client.ovpn
+pol-proxy/
+test_all_vpns.py
