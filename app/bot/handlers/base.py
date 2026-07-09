@@ -3,6 +3,7 @@ from aiogram.filters import CommandStart, Command
 from aiogram.fsm.context import FSMContext
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from sqlalchemy import select
+from sqlalchemy.orm import selectinload
 from app.core.database import AsyncSessionLocal
 from app.models.models import User, Ticket, Doctor, Specialty
 from app.bot.keyboards import get_main_menu_kb
@@ -102,6 +103,35 @@ async def process_view_specialty(callback: types.CallbackQuery):
             await callback.answer("Направление не найдено.")
             return
             
+        # Find doctors of this specialty who have active tickets
+        result = await session.execute(
+            select(Doctor)
+            .join(Ticket)
+            .where(Doctor.specialty_id == spec_id, Ticket.status == "available")
+            .distinct()
+            .order_by(Doctor.full_name)
+        )
+        doctors = result.scalars().all()
+        if not doctors:
+            await callback.message.edit_text(f"Свободных талонов по направлению «{specialty.name}» уже нет.")
+            return
+            
+        from app.bot.keyboards import get_view_doctors_kb
+        await callback.message.edit_text(
+            f"🩺 **Направление:** {specialty.name}\n\nВыберите врача для просмотра свободных талонов:",
+            reply_markup=get_view_doctors_kb(spec_id, doctors)
+        )
+
+@router.callback_query(F.data.startswith("viewspec_all_"))
+async def process_view_specialty_all(callback: types.CallbackQuery):
+    spec_id = int(callback.data.split("_")[3])
+    async with AsyncSessionLocal() as session:
+        spec_res = await session.execute(select(Specialty).where(Specialty.id == spec_id))
+        specialty = spec_res.scalar_one_or_none()
+        if not specialty:
+            await callback.answer("Направление не найдено.")
+            return
+            
         result = await session.execute(
             select(Ticket, Doctor)
             .join(Doctor, Ticket.doctor_id == Doctor.id)
@@ -121,7 +151,6 @@ async def process_view_specialty(callback: types.CallbackQuery):
             
         text = f"🩺 **Свободные талоны: {specialty.name}**\n\n"
         
-        # Limit to 8 doctors to prevent Telegram MESSAGE_TOO_LONG error
         doc_names = list(by_doc.keys())
         visible_docs = doc_names[:8]
         
@@ -138,9 +167,43 @@ async def process_view_specialty(callback: types.CallbackQuery):
             
         text += "🔗 Записаться на сайте: http://self.19crp.by:8028/ticket/"
         
-        # Build clean keyboard with only "Back" button to reduce message payload size
-        builder = InlineKeyboardBuilder()
-        builder.button(text="🔙 К выбору направлений", callback_data="viewspec_back")
-        builder.adjust(1)
+        from app.bot.keyboards import get_view_single_doctor_kb
+        await callback.message.edit_text(text, reply_markup=get_view_single_doctor_kb(spec_id))
+
+@router.callback_query(F.data.startswith("viewdoc_"))
+async def process_view_doctor(callback: types.CallbackQuery):
+    doc_id = int(callback.data.split("_")[1])
+    async with AsyncSessionLocal() as session:
+        doc_res = await session.execute(
+            select(Doctor)
+            .where(Doctor.id == doc_id)
+            .options(selectinload(Doctor.specialty))
+        )
+        doctor = doc_res.scalar_one_or_none()
+        if not doctor:
+            await callback.answer("Врач не найден.")
+            return
+            
+        result = await session.execute(
+            select(Ticket)
+            .where(Ticket.doctor_id == doc_id, Ticket.status == "available")
+            .order_by(Ticket.date, Ticket.time)
+        )
+        tickets = result.scalars().all()
+        if not tickets:
+            await callback.message.edit_text(f"У врача {doctor.full_name} больше нет свободных талонов.")
+            return
+            
+        slots = [f"{t.date.strftime('%d.%m')} в {t.time.strftime('%H:%M')}" for t in tickets]
         
-        await callback.message.edit_text(text, reply_markup=builder.as_markup())
+        text = f"👨‍⚕️ **Врач:** {doctor.full_name}\n"
+        text += f"🩺 **Направление:** {doctor.specialty.name if doctor.specialty else 'Врач общей практики'}\n\n"
+        text += f"📅 **Свободные талоны ({len(slots)}):**\n"
+        text += f"   {', '.join(slots[:20])}\n"
+        if len(slots) > 20:
+            text += f"   (и еще {len(slots) - 20} талонов)\n"
+        text += "\n"
+        text += "🔗 Записаться на сайте: http://self.19crp.by:8028/ticket/"
+        
+        from app.bot.keyboards import get_view_single_doctor_kb
+        await callback.message.edit_text(text, reply_markup=get_view_single_doctor_kb(doctor.specialty_id))

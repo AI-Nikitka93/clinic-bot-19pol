@@ -61,3 +61,19 @@ def get_view_specialties_kb(specialties) -> InlineKeyboardMarkup:
         builder.button(text=sp.name, callback_data=f"viewspec_{sp.id}")
     builder.adjust(1)
     return builder.as_markup()
+
+def get_view_doctors_kb(specialty_id, doctors) -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    for d in doctors:
+        builder.button(text=f"👨‍⚕️ {d.full_name}", callback_data=f"viewdoc_{d.id}")
+    builder.button(text="👥 Все врачи направления", callback_data=f"viewspec_all_{specialty_id}")
+    builder.button(text="🔙 К выбору направлений", callback_data="viewspec_back")
+    builder.adjust(1)
+    return builder.as_markup()
+
+def get_view_single_doctor_kb(specialty_id) -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    builder.button(text="🔙 К выбору врачей", callback_data=f"viewspec_{specialty_id}")
+    builder.button(text="🔙 К выбору направлений", callback_data="viewspec_back")
+    builder.adjust(1)
+    return builder.as_markup()
