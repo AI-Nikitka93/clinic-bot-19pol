@@ -34,27 +34,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y openvpn resolvconf
 
-      - name: Connect to VPN
-        run: |
-          sudo openvpn --config client.ovpn --auth-user-pass auth.txt --log openvpn.log --daemon
-          # Ожидание поднятия интерфейса и обновления маршрутов
-          sleep 15
-
-      - name: Verify IP and Location
-        run: |
-          echo "=== OPENVPN LOGS ==="
-          sudo cat openvpn.log || true
-          echo "====================="
-          echo "Current Public IP:"
-          curl -s https://ifconfig.me || echo "Failed to get IP"
-          echo "IP Details:"
-          curl -s ipinfo.io || echo "Failed to get location details"
-
-      - name: Verify Clinic Connection
-        run: |
-          echo "Testing connection to clinic site..."
-          curl -I --connect-timeout 8 http://self.19crp.by:8028/ticket/ || echo "Failed to connect to clinic"
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -64,15 +43,11 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install requests beautifulsoup4
 
-      - name: Run Scraper
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-          REDIS_URL: ${{ secrets.REDIS_URL }}
+      - name: Run VPN Routes Test
         run: |
-          python -m app.scraper.tasks
+          python test_all_vpns.py
 
       - name: Disconnect VPN
         if: always()
