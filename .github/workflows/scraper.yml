@@ -36,12 +36,15 @@ jobs:
 
       - name: Connect to VPN
         run: |
-          sudo openvpn --config client.ovpn --auth-user-pass auth.txt --daemon
+          sudo openvpn --config client.ovpn --auth-user-pass auth.txt --log openvpn.log --daemon
           # Ожидание поднятия интерфейса и обновления маршрутов
-          sleep 12
+          sleep 15
 
       - name: Verify IP and Location
         run: |
+          echo "=== OPENVPN LOGS ==="
+          cat openvpn.log || true
+          echo "====================="
           echo "Current Public IP:"
           curl -s https://ifconfig.me || echo "Failed to get IP"
           echo "IP Details:"

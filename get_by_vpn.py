@@ -36,6 +36,17 @@ def main():
             continue
             
         country = row['CountryShort']
+        # Безопасно парсим Score и Ping для сортировки
+        try:
+            row['Score'] = int(row.get('Score', 0))
+        except ValueError:
+            row['Score'] = 0
+            
+        try:
+            row['Ping'] = int(row.get('Ping', 9999))
+        except ValueError:
+            row['Ping'] = 9999
+            
         if country == 'BY':
             by_servers.append(row)
         elif country == 'RU':
@@ -43,14 +54,18 @@ def main():
             
     print(f"Найдено VPN-серверов: Беларусь (BY) - {len(by_servers)}, Россия (RU) - {len(ru_servers)}")
     
+    # Сортируем серверы по качеству: сначала по Score (по убыванию), затем по Ping (по возрастанию)
+    by_servers.sort(key=lambda x: (x['Score'], -x['Ping']), reverse=True)
+    ru_servers.sort(key=lambda x: (x['Score'], -x['Ping']), reverse=True)
+    
     # Приоритет отдаем Беларуси, затем России
     target_server = None
     if by_servers:
         target_server = by_servers[0]
-        print(f"Выбран сервер в Беларуси (IP: {target_server['IP']})")
+        print(f"Выбран сервер в Беларуси (IP: {target_server['IP']}, Score: {target_server['Score']}, Ping: {target_server['Ping']})")
     elif ru_servers:
         target_server = ru_servers[0]
-        print(f"Выбран резервный сервер в России (IP: {target_server['IP']})")
+        print(f"Выбран резервный сервер в России (IP: {target_server['IP']}, Score: {target_server['Score']}, Ping: {target_server['Ping']})")
         
     if not target_server:
         print("Критическая ошибка: В списке не найдено серверов в BY или RU.")
