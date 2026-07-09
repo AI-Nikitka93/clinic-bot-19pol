@@ -1,0 +1,101 @@
+from aiogram import Router, F, types
+from aiogram.filters import Command
+from aiogram.fsm.context import FSMContext
+from sqlalchemy import select, delete
+from sqlalchemy.orm import selectinload
+from app.core.database import AsyncSessionLocal
+from app.models.models import User, Source, Specialty, Doctor, Subscription
+from app.bot.state import SubscriptionFlow
+from app.bot.keyboards import get_sources_kb, get_specialties_kb, get_doctors_kb, get_filters_kb, get_subscriptions_kb
+
+router = Router()
+
+@router.message(Command("subscribe"))
+async def cmd_subscribe(message: types.Message, state: FSMContext):
+    async with AsyncSessionLocal() as session:
+        result = await session.execute(select(Source).where(Source.is_active == True))
+        sources = result.scalars().all()
+        if not sources:
+            await message.answer("No sources available.")
+            return
+        await message.answer("Select source:", reply_markup=get_sources_kb(sources))
+        await state.set_state(SubscriptionFlow.selecting_source)
+
+@router.callback_query(SubscriptionFlow.selecting_source, F.data.startswith("source_"))
+async def process_source(callback: types.CallbackQuery, state: FSMContext):
+    source_id = int(callback.data.split("_")[1])
+    await state.update_data(source_id=source_id)
+    
+    async with AsyncSessionLocal() as session:
+        result = await session.execute(select(Specialty).where(Specialty.source_id == source_id))
+        specialties = result.scalars().all()
+        await callback.message.edit_text("Select specialty:", reply_markup=get_specialties_kb(specialties))
+        await state.set_state(SubscriptionFlow.selecting_specialty)
+
+@router.callback_query(SubscriptionFlow.selecting_specialty, F.data.startswith("specialty_"))
+async def process_specialty(callback: types.CallbackQuery, state: FSMContext):
+    if callback.data == "specialty_all":
+        await state.update_data(specialty_id=None, doctor_id=None)
+        await callback.message.edit_text("Select filter:", reply_markup=get_filters_kb())
+        await state.set_state(SubscriptionFlow.selecting_filters)
+        return
+
+    specialty_id = int(callback.data.split("_")[1])
+    await state.update_data(specialty_id=specialty_id)
+    
+    async with AsyncSessionLocal() as session:
+        result = await session.execute(select(Doctor).where(Doctor.specialty_id == specialty_id))
+        doctors = result.scalars().all()
+        await callback.message.edit_text("Select doctor:", reply_markup=get_doctors_kb(doctors))
+        await state.set_state(SubscriptionFlow.selecting_doctor)
+
+@router.callback_query(SubscriptionFlow.selecting_doctor, F.data.startswith("doctor_"))
+async def process_doctor(callback: types.CallbackQuery, state: FSMContext):
+    if callback.data == "doctor_all":
+        await state.update_data(doctor_id=None)
+    else:
+        doctor_id = int(callback.data.split("_")[1])
+        await state.update_data(doctor_id=doctor_id)
+    
+    await callback.message.edit_text("Select filter:", reply_markup=get_filters_kb())
+    await state.set_state(SubscriptionFlow.selecting_filters)
+
+@router.callback_query(SubscriptionFlow.selecting_filters, F.data.startswith("filter_"))
+async def process_filters(callback: types.CallbackQuery, state: FSMContext):
+    data = await state.get_data()
+    async with AsyncSessionLocal() as session:
+        result = await session.execute(select(User).where(User.telegram_id == callback.from_user.id))
+        user = result.scalar_one()
+        
+        sub = Subscription(
+            user_id=user.id,
+            source_id=data.get("source_id"),
+            specialty_id=data.get("specialty_id"),
+            doctor_id=data.get("doctor_id")
+        )
+        session.add(sub)
+        await session.commit()
+    
+    await callback.message.edit_text("Subscription saved!")
+    await state.clear()
+
+@router.message(Command("subscriptions"))
+async def list_subscriptions(message: types.Message):
+    async with AsyncSessionLocal() as session:
+        result = await session.execute(
+            select(Subscription).join(User).where(User.telegram_id == message.from_user.id)
+        )
+        subs = result.scalars().all()
+        if not subs:
+            await message.answer("No active subscriptions.")
+            return
+        await message.answer("Your subscriptions:", reply_markup=get_subscriptions_kb(subs))
+
+@router.callback_query(F.data.startswith("delsub_"))
+async def del_subscription(callback: types.CallbackQuery):
+    sub_id = int(callback.data.split("_")[1])
+    async with AsyncSessionLocal() as session:
+        await session.execute(delete(Subscription).where(Subscription.id == sub_id))
+        await session.commit()
+    await callback.answer("Subscription deleted")
+    await callback.message.edit_text("Subscription deleted.")

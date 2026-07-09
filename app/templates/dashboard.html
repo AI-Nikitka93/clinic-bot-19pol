@@ -1,0 +1,32 @@
+{% extends "sqladmin/layout.html" %}
+{% block content %}
+<div class="container-fluid">
+    <h1 class="mt-4">Dashboard</h1>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-header">Users</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ users_count }}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-header">Subscriptions</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ subs_count }}</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-header">Tickets</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ tickets_count }}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

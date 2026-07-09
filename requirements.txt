@@ -1,0 +1,11 @@
+sqlalchemy[asyncio]
+asyncpg
+alembic
+pydantic-settings
+redis
+aiogram
+fastapi
+uvicorn
+sqladmin
+itsdangerous
+jinja2

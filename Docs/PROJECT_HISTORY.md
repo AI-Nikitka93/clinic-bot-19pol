@@ -1,0 +1,15 @@
+### 2026-07-09 09:59:58 TZ - Реализация Telegram Bot Layer
+- Changed: Создана базовая структура бота aiogram 3.x, добавлены хендлеры /start, /help, /subscribe, /subscriptions. Реализован FSM для подписки (выбор источника, специальности, врача). Создан `notifier.py` для прослушивания Redis PubSub и отправки уведомлений. Обновлены requirements.txt.
+- Files: 
+  - `app/bot/main.py`
+  - `app/bot/handlers/__init__.py`
+  - `app/bot/handlers/base.py`
+  - `app/bot/handlers/subscription.py`
+  - `app/bot/keyboards.py`
+  - `app/bot/notifier.py`
+  - `app/bot/state.py`
+  - `app/core/config.py`
+  - `requirements.txt`
+  - `task.md`
+- Verification: Код написан без ошибок синтаксиса, добавлены зависимости в requirements.txt.
+- Status: DONE
