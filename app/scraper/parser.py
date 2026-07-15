@@ -66,7 +66,7 @@ async def get_tickets_for_doctor(client: httpx.AsyncClient, doctor_url: str) -> 
     current_month = datetime.now().month
     tickets = []
 
-    for offset in (0, 1):
+    for offset in range(5): # Check 5 weeks ahead (up to 35 days)
         url = doctor_url
         if "?" in url:
             url += f"&Offset={offset}"
