@@ -57,8 +57,15 @@ def main():
         config_base64 = target_server['OpenVPN_ConfigData_Base64']
         config_data = base64.b64decode(config_base64).decode('utf-8')
         
+        safe_lines = []
+        for line in config_data.splitlines():
+            clean_line = line.strip().lower()
+            if clean_line.startswith(("up ", "down ", "route-up ", "script-security ", "command ")):
+                continue
+            safe_lines.append(line)
+        
         with open("client.ovpn", "w", encoding="utf-8") as f:
-            f.write(config_data)
+            f.write("\n".join(safe_lines))
             
         print("Успех! Файл конфигурации client.ovpn успешно сохранен.")
         sys.exit(0)

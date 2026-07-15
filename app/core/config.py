@@ -6,6 +6,9 @@ class Settings(BaseSettings):
     REDIS_URL: str = "redis://localhost:6379/0"
     BOT_TOKEN: str = "test_token"
     WEBHOOK_URL: str = ""
+    ADMIN_SECRET: str = "change_me"
+    CRON_SECRET: str = "change_me"
+    WEBHOOK_SECRET: str = "change_me"
 
     @field_validator("DATABASE_URL", mode="before")
     @classmethod

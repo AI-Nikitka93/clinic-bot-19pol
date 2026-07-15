@@ -26,11 +26,13 @@ async def get_specialties(client: httpx.AsyncClient) -> List[Dict[str, str]]:
             qs = parse_qs(urlparse(href).query)
             job_id = qs.get("jobId", [None])[0]
             if job_id:
-                specialties.append({
-                    "id": job_id,
-                    "name": a.get_text(strip=True),
-                    "url": urljoin(BASE_URL, href)
-                })
+                url = urljoin(BASE_URL, href)
+                if url.startswith(BASE_URL):
+                    specialties.append({
+                        "id": job_id,
+                        "name": a.get_text(strip=True),
+                        "url": url
+                    })
     return specialties
 
 import re
@@ -49,62 +51,74 @@ async def get_doctors_for_specialty(client: httpx.AsyncClient, specialty_url: st
                     doc_id = v[0]
                     break
             if doc_id:
-                doctors.append({
-                    "id": doc_id,
-                    "name": a.get_text(strip=True),
-                    "url": urljoin(BASE_URL, href)
-                })
+                url = urljoin(BASE_URL, href)
+                if url.startswith(BASE_URL):
+                    doctors.append({
+                        "id": doc_id,
+                        "name": a.get_text(strip=True),
+                        "url": url
+                    })
     return doctors
 
 async def get_tickets_for_doctor(client: httpx.AsyncClient, doctor_url: str) -> List[Dict[str, Any]]:
-    html = await fetch_html(client, doctor_url)
-    soup = BeautifulSoup(html, "html.parser")
-    
-    # Parse month and year
-    months_ru = {
-        "январь": 1, "февраль": 2, "март": 3, "апрель": 4, "май": 5, "июнь": 6,
-        "июль": 7, "август": 8, "сентябрь": 9, "октябрь": 10, "ноябрь": 11, "декабрь": 12
-    }
-    month = 7  # fallback
-    year = 2026  # fallback
-    
-    for element in soup.find_all(string=True):
-        text = element.strip()
-        clean_text = text.replace('<<', '').replace('>>', '').strip().lower()
-        match = re.match(r'([а-яё]+)\s+(\d{4})', clean_text)
-        if match:
-            m_name, y_val = match.groups()
-            if m_name in months_ru:
-                month = months_ru[m_name]
-                year = int(y_val)
-                break
-                
+    from datetime import datetime
+    current_year = datetime.now().year
+    current_month = datetime.now().month
     tickets = []
-    
-    ticket_divs = soup.find_all('div', class_='ticket')
-    for div in ticket_divs:
-        day_elem = div.find('div', class_='ticket-daynumber')
-        if not day_elem:
-            continue
-        day_text = day_elem.get_text(strip=True)
-        if not day_text.isdigit():
-            continue
-        day = int(day_text)
+
+    for offset in (0, 1):
+        url = doctor_url
+        if "?" in url:
+            url += f"&Offset={offset}"
+        else:
+            url += f"?Offset={offset}"
+
+        html = await fetch_html(client, url)
+        soup = BeautifulSoup(html, "html.parser")
         
-        date_str = f"{year:04d}-{month:02d}-{day:02d}"
+        # Parse month and year
+        months_ru = {
+            "январь": 1, "февраль": 2, "март": 3, "апрель": 4, "май": 5, "июнь": 6,
+            "июль": 7, "август": 8, "сентябрь": 9, "октябрь": 10, "ноябрь": 11, "декабрь": 12
+        }
+        month = current_month
+        year = current_year
         
-        links = div.find_all('a')
-        for a in links:
-            onclick = a.get('onclick', '')
-            match = re.search(r'orderTicket\((\d+)\)', onclick)
+        for element in soup.find_all(string=True):
+            text = element.strip()
+            clean_text = text.replace('<<', '').replace('>>', '').strip().lower()
+            match = re.match(r'([а-яё]+)\s+(\d{4})', clean_text)
             if match:
-                t_id = match.group(1)
-                t_time = a.get_text(strip=True)
-                tickets.append({
-                    "id": t_id,
-                    "date": date_str,
-                    "time": t_time
-                })
+                m_name, y_val = match.groups()
+                if m_name in months_ru:
+                    month = months_ru[m_name]
+                    year = int(y_val)
+                    break
+                    
+        ticket_divs = soup.find_all('div', class_='ticket')
+        for div in ticket_divs:
+            day_elem = div.find('div', class_='ticket-daynumber')
+            if not day_elem:
+                continue
+            day_text = day_elem.get_text(strip=True)
+            if not day_text.isdigit():
+                continue
+            day = int(day_text)
+            
+            date_str = f"{year:04d}-{month:02d}-{day:02d}"
+            
+            links = div.find_all('a')
+            for a in links:
+                onclick = a.get('onclick', '')
+                match = re.search(r'orderTicket\((\d+)\)', onclick)
+                if match:
+                    t_id = match.group(1)
+                    t_time = a.get_text(strip=True)
+                    tickets.append({
+                        "id": t_id,
+                        "date": date_str,
+                        "time": t_time
+                    })
     return tickets
 
 async def scrape_all_tickets() -> Dict[str, Any]:
@@ -121,7 +135,7 @@ async def scrape_all_tickets() -> Dict[str, Any]:
                     return spec_name, doc["name"], doc["id"], tix
                 except Exception as e:
                     logger.error(f"Error fetching tickets for doctor {doc['name']}: {e}")
-                    return spec_name, doc["name"], doc["id"], []
+                    return spec_name, doc["name"], doc["id"], None
 
         tasks = []
         for spec in specialties:
@@ -136,6 +150,8 @@ async def scrape_all_tickets() -> Dict[str, Any]:
         results = await asyncio.gather(*tasks)
         
         for spec_name, doc_name, doc_id, tix in results:
+            if tix is None:
+                continue
             state[spec_name]["doctors"][doc_name] = {
                 "id": doc_id,
                 "tickets": {t["id"]: f"{t['date']} {t['time']}" for t in tix}

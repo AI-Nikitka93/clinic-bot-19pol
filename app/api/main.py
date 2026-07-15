@@ -1,6 +1,8 @@
-from fastapi import FastAPI, Request, HTTPException, status
+from fastapi import FastAPI, Request, HTTPException, status, Header
 from contextlib import asynccontextmanager
 from sqladmin import Admin
+from sqladmin.authentication import AuthenticationBackend
+from app.core.config import settings
 from app.core.database import engine
 from app.api.admin import (
     UserAdmin, SourceAdmin, SpecialtyAdmin, DoctorAdmin, TicketAdmin, 
@@ -14,12 +16,33 @@ import httpx
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await set_webhook()
+    # await set_webhook() # Disabled to prevent Telegram rate-limits on Vercel ephemeral boots
     yield
+
+class AdminAuth(AuthenticationBackend):
+    async def login(self, request: Request) -> bool:
+        form = await request.form()
+        password = form.get("password")
+        if password == settings.ADMIN_SECRET:
+            request.session.update({"token": "admin_token"})
+            return True
+        return False
+
+    async def logout(self, request: Request) -> bool:
+        request.session.clear()
+        return True
+
+    async def authenticate(self, request: Request) -> bool:
+        token = request.session.get("token")
+        if not token:
+            return False
+        return True
+
+authentication_backend = AdminAuth(secret_key=settings.ADMIN_SECRET)
 
 app = FastAPI(title="Clinic Ticket Monitoring System", lifespan=lifespan)
 
-admin = Admin(app, engine, templates_dir="app/templates")
+admin = Admin(app, engine, templates_dir="app/templates", authentication_backend=authentication_backend)
 
 admin.add_view(DashboardView)
 admin.add_view(UserAdmin)
@@ -36,7 +59,7 @@ async def health_check():
 
 @app.get("/api/cron/scrape")
 async def trigger_scrape(key: str):
-    if key != "5YkVoxpU9cGjlUiEOcT98uDghR38i4EQ3RjWFtdFv+k=":
+    if key != settings.CRON_SECRET:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid cron key"
@@ -77,7 +100,9 @@ async def trigger_scrape(key: str):
             )
 
 @app.post("/api/webhook")
-async def telegram_webhook(request: Request):
+async def telegram_webhook(request: Request, x_telegram_bot_api_secret_token: str = Header(None)):
+    if x_telegram_bot_api_secret_token != settings.WEBHOOK_SECRET:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
     update_data = await request.json()
     update = Update.model_validate(update_data, context={"bot": bot})
     await dp.feed_webhook_update(bot, update)

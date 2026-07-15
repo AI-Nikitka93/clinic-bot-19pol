@@ -8,7 +8,6 @@ from sqlalchemy import select, update
 from app.core.database import AsyncSessionLocal
 from app.models.models import User, Source, Specialty, Doctor, Ticket, Subscription
 from app.scraper.parser import scrape_all_tickets
-from app.scraper.differ import process_diff_and_notify
 from aiogram import Bot
 
 from app.core.config import settings
@@ -52,10 +51,6 @@ async def run_single_scrape():
             result = await session.execute(select(Doctor))
             doctors = {d.external_id: d for d in result.scalars().all()}
             
-            # 4. Get active tickets in DB
-            result = await session.execute(select(Ticket.id).where(Ticket.status == "available"))
-            active_ticket_ids = set(row[0] for row in result.all())
-            
             # Process specialties and doctors
             for spec_name, spec_data in new_state.items():
                 spec_ext_id = spec_data["id"]
@@ -80,16 +75,31 @@ async def run_single_scrape():
 
             # Collect parsed tickets
             parsed_tickets_map = {}
+            successfully_scraped_doctor_ids = set()
             for spec_name, spec_data in new_state.items():
                 for doc_name, doc_data in spec_data["doctors"].items():
                     doc_ext_id = doc_data["id"]
+                    doc_internal_id = doctors[doc_ext_id].id
+                    successfully_scraped_doctor_ids.add(doc_internal_id)
                     for t_id, t_datetime_str in doc_data["tickets"].items():
                         parsed_tickets_map[int(t_id)] = {
-                            "doc_id": doctors[doc_ext_id].id,
+                            "doc_id": doc_internal_id,
                             "datetime_str": t_datetime_str
                         }
             
+            if not successfully_scraped_doctor_ids:
+                logger.warning("No doctors were scraped successfully. Skipping sync.")
+                return
+
             parsed_ticket_ids = set(parsed_tickets_map.keys())
+            
+            # 4. Get active tickets in DB
+            result = await session.execute(
+                select(Ticket.id)
+                .where(Ticket.status == "available")
+                .where(Ticket.doctor_id.in_(list(successfully_scraped_doctor_ids)))
+            )
+            active_ticket_ids = set(row[0] for row in result.all())
             
             # 5. Booked tickets (disappeared from site)
             booked_ids = active_ticket_ids - parsed_ticket_ids
@@ -154,45 +164,50 @@ async def run_single_scrape():
             # 7. Notify subscribers
             if bot and new_tickets_to_notify:
                 logger.info(f"Notifying subscribers about {len(new_tickets_to_notify)} new tickets...")
+                
+                # Pre-fetch all doctors and specialties mapping for fast lookup
+                # (We already have doctors_by_id and specialties dictionary)
+                
                 for nt in new_tickets_to_notify:
-                    result = await session.execute(
-                        select(Doctor, Specialty)
-                        .join(Specialty)
-                        .where(Doctor.id == nt["doctor_id"])
-                    )
-                    row = result.first()
-                    if not row:
-                        continue
-                    doctor, specialty = row
+                    doc = doctors_by_id.get(nt["doctor_id"])
+                    if not doc: continue
+                    
+                    # Find specialty
+                    spec = None
+                    for s in specialties.values():
+                        if s.id == doc.specialty_id:
+                            spec = s
+                            break
+                    if not spec: continue
                     
                     stmt = select(Subscription, User).join(User).where(
                         Subscription.source_id == source.id,
-                        (Subscription.specialty_id == None) | (Subscription.specialty_id == specialty.id),
-                        (Subscription.doctor_id == None) | (Subscription.doctor_id == doctor.id)
+                        (Subscription.specialty_id.is_(None)) | (Subscription.specialty_id == spec.id),
+                        (Subscription.doctor_id.is_(None)) | (Subscription.doctor_id == doc.id)
                     )
                     
                     subs_result = await session.execute(stmt)
-                    for sub, user in subs_result.all():
-                        msg = (
-                            f"🔔 Новый свободный талон!\n"
-                            f"👨‍⚕️ Врач: {doctor.full_name}\n"
-                            f"🩺 Специальность: {specialty.name}\n"
-                            f"📅 Дата: {nt['date'].strftime('%d.%m.%Y')} в {nt['time'].strftime('%H:%M')}\n"
-                            f"🔗 Записаться: http://self.19crp.by:8028/ticket/"
-                        )
+                    subscribers = subs_result.all()
+                    
+                    if not subscribers:
+                        continue
+                        
+                    msg = (
+                        f"🔔 Новый свободный талон!\n"
+                        f"👨‍⚕️ Врач: {doc.full_name}\n"
+                        f"🩺 Специальность: {spec.name}\n"
+                        f"📅 Дата: {nt['date'].strftime('%d.%m.%Y')} в {nt['time'].strftime('%H:%M')}\n"
+                        f"🔗 Записаться: http://self.19crp.by:8028/ticket/"
+                    )
+                    
+                    for sub, user in subscribers:
                         try:
                             await bot.send_message(user.telegram_id, msg)
-                            logger.info(f"Notification sent to user {user.telegram_id} for doctor {doctor.full_name}")
+                            logger.info(f"Notification sent to user {user.telegram_id} for doctor {doc.full_name}")
+                            await asyncio.sleep(0.05) # Prevent Telegram 429 Too Many Requests
                         except Exception as send_err:
                             logger.error(f"Failed to send notification to {user.telegram_id}: {send_err}")
 
-        if redis_client:
-            try:
-                logger.info("Processing Redis state...")
-                await process_diff_and_notify(redis_client, new_state)
-            except Exception as redis_err:
-                logger.warning(f"Failed to process Redis state: {redis_err}")
-                
         logger.info("Single scrape iteration finished successfully.")
         
     except Exception as e:

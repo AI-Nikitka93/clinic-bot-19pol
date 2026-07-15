@@ -7,8 +7,5 @@ alembic
 pydantic-settings
 redis
 sqladmin
-itsdangerous
-jinja2
 beautifulsoup4
 httpx
-python-multipart

@@ -1,6 +1,6 @@
 from datetime import datetime, date, time as dt_time
 from typing import Optional, List
-from sqlalchemy import String, Integer, Boolean, DateTime, Date, Time, ForeignKey, BigInteger
+from sqlalchemy import String, Integer, Date, Time, ForeignKey, BigInteger
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.core.database import Base
 
@@ -59,7 +59,7 @@ class Doctor(Base):
 class Ticket(Base):
     __tablename__ = "tickets"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
     doctor_id: Mapped[int] = mapped_column(ForeignKey("doctors.id"))
     date: Mapped[date] = mapped_column(Date)
     time: Mapped[dt_time] = mapped_column(Time)

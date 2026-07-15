@@ -11,10 +11,7 @@ dependencies = [
     "fastapi",
     "uvicorn",
     "sqladmin",
-    "itsdangerous",
-    "jinja2",
     "beautifulsoup4",
-    "httpx",
-    "python-multipart"
+    "httpx"
 ]
 requires-python = "~=3.12.0"

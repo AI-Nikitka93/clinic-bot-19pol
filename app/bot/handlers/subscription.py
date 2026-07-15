@@ -13,7 +13,7 @@ router = Router()
 @router.message(Command("subscribe"))
 async def cmd_subscribe(message: types.Message, state: FSMContext):
     async with AsyncSessionLocal() as session:
-        result = await session.execute(select(Source).where(Source.is_active == True))
+        result = await session.execute(select(Source).where(Source.is_active))
         sources = result.scalars().all()
         if not sources:
             await message.answer("No sources available.")
@@ -106,7 +106,15 @@ async def list_subscriptions(message: types.Message):
 async def del_subscription(callback: types.CallbackQuery):
     sub_id = int(callback.data.split("_")[1])
     async with AsyncSessionLocal() as session:
-        await session.execute(delete(Subscription).where(Subscription.id == sub_id))
-        await session.commit()
-    await callback.answer("Подписка удалена")
-    await callback.message.edit_text("✅ Подписка успешно удалена.")
+        result = await session.execute(select(User).where(User.telegram_id == callback.from_user.id))
+        user = result.scalar_one_or_none()
+        if user:
+            res = await session.execute(
+                delete(Subscription).where(Subscription.id == sub_id, Subscription.user_id == user.id)
+            )
+            await session.commit()
+            if res.rowcount > 0:
+                await callback.answer("Подписка удалена")
+                await callback.message.edit_text("✅ Подписка успешно удалена.")
+                return
+    await callback.answer("Ошибка: подписка не найдена или нет прав", show_alert=True)
