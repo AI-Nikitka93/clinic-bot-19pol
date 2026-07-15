@@ -9,3 +9,6 @@ redis
 sqladmin
 beautifulsoup4
 httpx
+itsdangerous
+jinja2
+python-multipart
