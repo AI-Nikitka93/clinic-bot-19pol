@@ -21,6 +21,9 @@ jobs:
       - name: Install requests for VPN fetcher
         run: pip install requests
 
+      - name: Keep Vercel Lambda Warm
+        run: curl -s -I https://19pol.vercel.app/health
+
       - name: Fetch Dynamic Belarus VPN Config
         id: fetch-vpn
         run: |
