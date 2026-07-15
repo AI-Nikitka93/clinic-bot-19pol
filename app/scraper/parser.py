@@ -163,8 +163,9 @@ async def fetch_free_proxies() -> List[str]:
             res = await client.get("http://pubproxy.com/api/proxy?country=BY&format=txt&limit=20")
             if res.status_code == 200:
                 for line in res.text.splitlines():
-                    if line.strip():
-                        proxies.append(f"http://{line.strip()}")
+                    line = line.strip()
+                    if line and line.lower() != "no proxy":
+                        proxies.append(f"http://{line}")
         except Exception as e:
             logger.error(f"PubProxy API error: {e}")
             
