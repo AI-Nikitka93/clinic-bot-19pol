@@ -16,6 +16,7 @@ logger = logging.getLogger(__name__)
 
 async def run_single_scrape():
     logger.info("Starting single scrape iteration...")
+    use_proxy = os.getenv("USE_PROXY_FALLBACK", "0") == "1"
     redis_url = settings.REDIS_URL
     redis_client = None
     if redis_url:
@@ -30,7 +31,11 @@ async def run_single_scrape():
     bot = Bot(token=bot_token) if bot_token else None
     
     try:
-        new_state = await scrape_all_tickets()
+        new_state = await scrape_all_tickets(use_proxy_fallback=use_proxy)
+        if not new_state:
+            logger.warning("Scraping returned empty state (possibly all proxies failed). Skipping sync.")
+            return
+
         logger.info("Scraping finished. Syncing with PostgreSQL...")
         
         async with AsyncSessionLocal() as session:

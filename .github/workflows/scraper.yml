@@ -79,24 +79,25 @@ jobs:
           fi
 
       - name: Set up Python for Scraper
-        if: env.VPN_FOUND == 'true' && env.CLINIC_CONNECTED == 'true'
+        if: env.VPN_FOUND == 'false' || env.CLINIC_CONNECTED == 'true'
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-          cache: 'pip'
+            python-version: '3.11'
+            cache: 'pip'
 
       - name: Install dependencies
-        if: env.VPN_FOUND == 'true' && env.CLINIC_CONNECTED == 'true'
+        if: env.VPN_FOUND == 'false' || env.CLINIC_CONNECTED == 'true'
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: Run Scraper
-        if: env.VPN_FOUND == 'true' && env.CLINIC_CONNECTED == 'true'
+        if: env.VPN_FOUND == 'false' || env.CLINIC_CONNECTED == 'true'
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           REDIS_URL: ${{ secrets.REDIS_URL }}
+          USE_PROXY_FALLBACK: ${{ env.VPN_FOUND == 'false' && '1' || '0' }}
         run: |
           python -m app.scraper.tasks
 

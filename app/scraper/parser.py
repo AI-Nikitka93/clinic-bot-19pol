@@ -121,40 +121,88 @@ async def get_tickets_for_doctor(client: httpx.AsyncClient, doctor_url: str) -> 
                     })
     return tickets
 
-async def scrape_all_tickets() -> Dict[str, Any]:
+async def fetch_free_proxies() -> List[str]:
+    proxies = []
+    async with httpx.AsyncClient(timeout=10.0) as client:
+        try:
+            res = await client.get("https://proxylist.geonode.com/api/proxy-list?country=BY&limit=10&protocols=http%2Chttps")
+            if res.status_code == 200:
+                data = res.json()
+                for item in data.get("data", []):
+                    proxies.append(f"http://{item['ip']}:{item['port']}")
+        except Exception as e:
+            logger.error(f"Geonode API error: {e}")
+            
+        try:
+            res = await client.get("https://api.proxyscrape.com/v2/?request=displayproxies&protocol=http&timeout=10000&country=BY")
+            if res.status_code == 200:
+                for line in res.text.splitlines():
+                    if line.strip():
+                        proxies.append(f"http://{line.strip()}")
+        except Exception as e:
+            logger.error(f"ProxyScrape API error: {e}")
+            
+    return list(set(proxies))
+
+async def scrape_all_tickets(use_proxy_fallback: bool = False) -> Dict[str, Any]:
     state = {}
     sem = asyncio.Semaphore(5)  # Limit concurrent requests to prevent clinic website block
     
-    async with httpx.AsyncClient(timeout=30.0) as client:
-        specialties = await get_specialties(client)
-        
-        async def fetch_doctor_tickets(spec_name, doc):
-            async with sem:
-                try:
-                    tix = await get_tickets_for_doctor(client, doc["url"])
-                    return spec_name, doc["name"], doc["id"], tix
-                except Exception as e:
-                    logger.error(f"Error fetching tickets for doctor {doc['name']}: {e}")
-                    return spec_name, doc["name"], doc["id"], None
+    proxies_to_try = [None]
+    if use_proxy_fallback:
+        logger.info("VPN not found. Fetching free proxies for fallback...")
+        free_proxies = await fetch_free_proxies()
+        logger.info(f"Found {len(free_proxies)} free BY proxies.")
+        if free_proxies:
+            proxies_to_try = free_proxies
+        else:
+            logger.error("No free proxies found. Cannot proceed without BY IP.")
+            return {}
 
-        tasks = []
-        for spec in specialties:
-            state[spec["name"]] = {"id": spec["id"], "doctors": {}}
-            try:
-                docs = await get_doctors_for_specialty(client, spec["url"])
-                for doc in docs:
-                    tasks.append(fetch_doctor_tickets(spec["name"], doc))
-            except Exception as e:
-                logger.error(f"Error fetching doctors for specialty {spec['name']}: {e}")
+    for proxy in proxies_to_try:
+        try:
+            logger.info(f"Attempting to scrape using proxy: {proxy}")
+            async with httpx.AsyncClient(timeout=30.0, proxy=proxy) as client:
+                # Test connection first
+                await fetch_html(client, BASE_URL)
+                logger.info(f"Connection successful using proxy {proxy}")
                 
-        results = await asyncio.gather(*tasks)
-        
-        for spec_name, doc_name, doc_id, tix in results:
-            if tix is None:
-                continue
-            state[spec_name]["doctors"][doc_name] = {
-                "id": doc_id,
-                "tickets": {t["id"]: f"{t['date']} {t['time']}" for t in tix}
-            }
-            
-    return state
+                specialties = await get_specialties(client)
+                
+                async def fetch_doctor_tickets(spec_name, doc):
+                    async with sem:
+                        try:
+                            tix = await get_tickets_for_doctor(client, doc["url"])
+                            return spec_name, doc["name"], doc["id"], tix
+                        except Exception as e:
+                            logger.error(f"Error fetching tickets for doctor {doc['name']}: {e}")
+                            return spec_name, doc["name"], doc["id"], None
+
+                tasks = []
+                for spec in specialties:
+                    state[spec["name"]] = {"id": spec["id"], "doctors": {}}
+                    try:
+                        docs = await get_doctors_for_specialty(client, spec["url"])
+                        for doc in docs:
+                            tasks.append(fetch_doctor_tickets(spec["name"], doc))
+                    except Exception as e:
+                        logger.error(f"Error fetching doctors for specialty {spec['name']}: {e}")
+                        
+                results = await asyncio.gather(*tasks)
+                
+                for spec_name, doc_name, doc_id, tix in results:
+                    if tix is None:
+                        continue
+                    state[spec_name]["doctors"][doc_name] = {
+                        "id": doc_id,
+                        "tickets": {t["id"]: f"{t['date']} {t['time']}" for t in tix}
+                    }
+                    
+                # If we reached here, parsing succeeded!
+                return state
+        except Exception as e:
+            logger.warning(f"Proxy {proxy} failed or blocked: {e}")
+            continue
+
+    logger.error("All proxies failed to connect.")
+    return {}
