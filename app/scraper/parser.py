@@ -124,6 +124,7 @@ async def get_tickets_for_doctor(client: httpx.AsyncClient, doctor_url: str) -> 
 async def fetch_free_proxies() -> List[str]:
     proxies = []
     async with httpx.AsyncClient(timeout=10.0) as client:
+        # 1. Geonode API
         try:
             res = await client.get("https://proxylist.geonode.com/api/proxy-list?country=BY&limit=10&protocols=http%2Chttps")
             if res.status_code == 200:
@@ -133,14 +134,39 @@ async def fetch_free_proxies() -> List[str]:
         except Exception as e:
             logger.error(f"Geonode API error: {e}")
             
+        # 2. ProxyScrape API v4
         try:
-            res = await client.get("https://api.proxyscrape.com/v2/?request=displayproxies&protocol=http&timeout=10000&country=BY")
+            res = await client.get("https://api.proxyscrape.com/v4/free-proxy-list/get?request=getproxies&proxy_format=ipport&format=text&country=by")
             if res.status_code == 200:
                 for line in res.text.splitlines():
                     if line.strip():
                         proxies.append(f"http://{line.strip()}")
         except Exception as e:
             logger.error(f"ProxyScrape API error: {e}")
+
+        # 3. Proxifly GitHub Repository
+        try:
+            res = await client.get("https://raw.githubusercontent.com/proxifly/free-proxy-list/main/proxies/countries/BY/data.txt")
+            if res.status_code == 200:
+                for line in res.text.splitlines():
+                    # Format is usually just ip:port or protocol://ip:port
+                    line = line.strip()
+                    if line:
+                        if not line.startswith("http"):
+                            line = f"http://{line}"
+                        proxies.append(line)
+        except Exception as e:
+            logger.error(f"Proxifly GitHub error: {e}")
+
+        # 4. PubProxy API
+        try:
+            res = await client.get("http://pubproxy.com/api/proxy?country=BY&format=txt&limit=20")
+            if res.status_code == 200:
+                for line in res.text.splitlines():
+                    if line.strip():
+                        proxies.append(f"http://{line.strip()}")
+        except Exception as e:
+            logger.error(f"PubProxy API error: {e}")
             
     return list(set(proxies))
 
