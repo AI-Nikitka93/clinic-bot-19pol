@@ -1,0 +1,475 @@
+run-scraper	UNKNOWN STEP	﻿2026-07-15T11:11:15.1157986Z Current runner version: '2.335.1'
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.1183505Z ##[group]Runner Image Provisioner
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.1184552Z Hosted Compute Agent
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.1185211Z Version: 20260624.560
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.1185941Z Commit: 925d229a51159bc391ae97e54a2dd1fe20af789d
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.1186778Z Build Date: 2026-06-24T18:26:47Z
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.1187588Z Worker ID: {779631e5-45e1-48f0-bc83-ce597d30d7f7}
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.1188447Z Azure Region: eastus
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.1189139Z ##[endgroup]
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.1190614Z ##[group]Operating System
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.1191296Z Ubuntu
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.1191922Z 24.04.4
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.1192746Z LTS
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.1193364Z ##[endgroup]
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.1193940Z ##[group]Runner Image
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.1194973Z Image: ubuntu-24.04
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.1195642Z Version: 20260705.232.1
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.1197012Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260705.232/images/ubuntu/Ubuntu2404-Readme.md
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.1198623Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260705.232
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.1199654Z ##[endgroup]
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.1200931Z ##[group]GITHUB_TOKEN Permissions
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.1203522Z Contents: read
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.1204423Z Metadata: read
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.1205124Z Packages: read
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.1205770Z ##[endgroup]
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.1207833Z Secret source: Actions
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.1208969Z Prepare workflow directory
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.1538172Z Prepare all required actions
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.1576777Z Getting action download info
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.3998357Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.4732891Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.6678129Z Complete job name: run-scraper
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.7491058Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.7500235Z ##[group]Run actions/checkout@v4
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.7501001Z with:
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.7501493Z   repository: AI-Nikitka93/clinic-bot-19pol
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.7505800Z   token: ***
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.7506271Z   ssh-strict: true
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.7506732Z   ssh-user: git
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.7507198Z   persist-credentials: true
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.7507706Z   clean: true
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.7508168Z   sparse-checkout-cone-mode: true
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.7508717Z   fetch-depth: 1
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.7509165Z   fetch-tags: false
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.7509626Z   show-progress: true
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.7510099Z   lfs: false
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.7510777Z   submodules: false
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.7511313Z   set-safe-directory: true
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.7512775Z ##[endgroup]
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.8530328Z Syncing repository: AI-Nikitka93/clinic-bot-19pol
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.8533194Z ##[group]Getting Git version info
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.8534527Z Working directory is '/home/runner/work/clinic-bot-19pol/clinic-bot-19pol'
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.8546259Z [command]/usr/bin/git version
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.8904111Z git version 2.54.0
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.8964372Z ##[endgroup]
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.8974466Z Temporarily overriding HOME='/home/runner/work/_temp/8f29ed8c-89ff-4d55-a4a2-6306c58725d4' before making global git config changes
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.8977411Z Adding repository directory to the temporary git global config as a safe directory
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:15.8981930Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/clinic-bot-19pol/clinic-bot-19pol
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.1338448Z Deleting the contents of '/home/runner/work/clinic-bot-19pol/clinic-bot-19pol'
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.1343347Z ##[group]Initializing the repository
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.1351035Z [command]/usr/bin/git init /home/runner/work/clinic-bot-19pol/clinic-bot-19pol
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.1475624Z hint: Using 'master' as the name for the initial branch. This default branch name
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.1480877Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.1482146Z hint: to use in all of your new repositories, which will suppress this warning,
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.1483516Z hint: call:
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.1484364Z hint:
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.1485368Z hint: 	git config --global init.defaultBranch <name>
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.1486179Z hint:
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.1486798Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.1487759Z hint: 'development'. The just-created branch can be renamed via this command:
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.1488517Z hint:
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.1488956Z hint: 	git branch -m <name>
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.1489469Z hint:
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.1490145Z hint: Disable this message with "git config set advice.defaultBranchName false"
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.1491597Z Initialized empty Git repository in /home/runner/work/clinic-bot-19pol/clinic-bot-19pol/.git/
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.1495278Z [command]/usr/bin/git remote add origin https://github.com/AI-Nikitka93/clinic-bot-19pol
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.1544436Z ##[endgroup]
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.1545638Z ##[group]Disabling automatic garbage collection
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.1549932Z [command]/usr/bin/git config --local gc.auto 0
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.1596435Z ##[endgroup]
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.1597976Z ##[group]Setting up auth
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.1606700Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.1650756Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.2012907Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.2047245Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.2280975Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.2317668Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.2573334Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.2614698Z ##[endgroup]
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.2616102Z ##[group]Fetching the repository
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.2625045Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +8b793b80d741d04961a8e2fac399af4ec47acfe7:refs/remotes/origin/master
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.4679465Z From https://github.com/AI-Nikitka93/clinic-bot-19pol
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.4681339Z  * [new ref]         8b793b80d741d04961a8e2fac399af4ec47acfe7 -> origin/master
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.4714054Z ##[endgroup]
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.4715391Z ##[group]Determining the checkout info
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.4717970Z ##[endgroup]
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.4724389Z [command]/usr/bin/git sparse-checkout disable
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.4774540Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.4805017Z ##[group]Checking out the ref
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.4809638Z [command]/usr/bin/git checkout --progress --force -B master refs/remotes/origin/master
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.4905076Z Reset branch 'master'
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.4908693Z branch 'master' set up to track 'origin/master'.
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.4925288Z ##[endgroup]
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.4970669Z [command]/usr/bin/git log -1 --format=%H
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.4999313Z 8b793b80d741d04961a8e2fac399af4ec47acfe7
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.5358542Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.5361908Z ##[group]Run actions/setup-python@v5
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.5362965Z with:
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.5363444Z   python-version: 3.11
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.5363978Z   check-latest: false
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.5368586Z   token: ***
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.5369066Z   update-environment: true
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.5369640Z   allow-prereleases: false
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.5370179Z   freethreaded: false
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.5370681Z ##[endgroup]
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.6676262Z ##[group]Installed versions
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.6769336Z (node:2276) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.6772069Z (Use `node --trace-deprecation ...` to show where the warning was created)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.6773888Z Successfully set up CPython (3.11.15)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.6775500Z ##[endgroup]
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.6965931Z ##[group]Run pip install requests
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.6967017Z [36;1mpip install requests[0m
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.7193133Z shell: /usr/bin/bash -e {0}
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.7193783Z env:
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.7194365Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.7195377Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.7196379Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.7197241Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.7198126Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.7199073Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:16.7199887Z ##[endgroup]
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:17.5582035Z Collecting requests
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:17.6137242Z   Downloading requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:17.7233479Z Collecting charset_normalizer<4,>=2 (from requests)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:17.7279474Z   Downloading charset_normalizer-3.4.9-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (41 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:17.7556967Z Collecting idna<4,>=2.5 (from requests)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:17.7597957Z   Downloading idna-3.18-py3-none-any.whl.metadata (6.1 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:17.7798161Z Collecting urllib3<3,>=1.26 (from requests)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:17.7843208Z   Downloading urllib3-2.7.0-py3-none-any.whl.metadata (6.9 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:17.8038986Z Collecting certifi>=2023.5.7 (from requests)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:17.8077996Z   Downloading certifi-2026.6.17-py3-none-any.whl.metadata (2.5 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:17.8161526Z Downloading requests-2.34.2-py3-none-any.whl (73 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:17.8258980Z Downloading charset_normalizer-3.4.9-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (221 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:17.8357978Z Downloading idna-3.18-py3-none-any.whl (65 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:17.8424388Z Downloading urllib3-2.7.0-py3-none-any.whl (131 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:17.8487473Z Downloading certifi-2026.6.17-py3-none-any.whl (133 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:17.8838372Z Installing collected packages: urllib3, idna, charset_normalizer, certifi, requests
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.0762960Z 
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.0774851Z Successfully installed certifi-2026.6.17 charset_normalizer-3.4.9 idna-3.18 requests-2.34.2 urllib3-2.7.0
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.1358393Z ##[group]Run curl -s -I https://19pol.vercel.app/health
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.1360170Z [36;1mcurl -s -I https://19pol.vercel.app/health[0m
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.1395722Z shell: /usr/bin/bash -e {0}
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.1396881Z env:
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.1398048Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.1400017Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.1401995Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.1404179Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.1405983Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.1407811Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.1409381Z ##[endgroup]
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.3041959Z HTTP/2 405 
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.3044253Z age: 0
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.3046121Z allow: GET
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.3048252Z cache-control: public, max-age=0, must-revalidate
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.3051243Z content-type: application/json
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.3053790Z date: Wed, 15 Jul 2026 11:11:14 GMT
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.3055723Z server: Vercel
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.3057858Z strict-transport-security: max-age=63072000; includeSubDomains; preload
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.3060564Z x-vercel-cache: MISS
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.3062679Z x-vercel-id: iad1::iad1::9ndbt-1784113878211-fb1d24494692
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.3064960Z content-length: 31
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.3065802Z 
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.3138958Z ##[group]Run python get_by_vpn.py && echo "VPN_FOUND=true" >> $GITHUB_ENV || {
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.3141120Z [36;1mpython get_by_vpn.py && echo "VPN_FOUND=true" >> $GITHUB_ENV || {[0m
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.3143089Z [36;1m  exit_code=$?[0m
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.3144169Z [36;1m  if [ $exit_code -eq 10 ]; then[0m
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.3145505Z [36;1m    echo "VPN_FOUND=false" >> $GITHUB_ENV[0m
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.3146789Z [36;1m  else[0m
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.3147713Z [36;1m    exit $exit_code[0m
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.3148759Z [36;1m  fi[0m
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.3149623Z [36;1m}[0m
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.3184220Z shell: /usr/bin/bash -e {0}
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.3185278Z env:
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.3186380Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.3188237Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.3190104Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.3191814Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.3193949Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.3195669Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:18.3197143Z ##[endgroup]
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.1026879Z Запрос к API VPNGate для получения списка бесплатных VPN...
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.1033938Z Найдено VPN-серверов в Беларуси (BY): 0
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.1034662Z Белорусские серверы в VPNGate отсутствуют в данный момент. Завершение с кодом 10.
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.1310346Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.1311673Z ##[group]Run actions/setup-python@v5
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.1311948Z with:
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.1312161Z   python-version: 3.11
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.1312693Z   cache: pip
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.1312911Z   check-latest: false
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.1315485Z   token: ***
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.1315710Z   update-environment: true
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.1315973Z   allow-prereleases: false
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.1316224Z   freethreaded: false
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.1316446Z env:
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.1316710Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.1317188Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.1317665Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.1318066Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.1318470Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.1318877Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.1319214Z   VPN_FOUND: false
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.1319428Z ##[endgroup]
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.2587915Z ##[group]Installed versions
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.2645614Z (node:2314) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.2646977Z (Use `node --trace-deprecation ...` to show where the warning was created)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.2647832Z Successfully set up CPython (3.11.15)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.2648714Z ##[endgroup]
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.3501148Z [command]/opt/hostedtoolcache/Python/3.11.15/x64/bin/pip cache dir
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.5065939Z /home/runner/.cache/pip
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.5997092Z Cache hit for: setup-python-Linux-x64-24.04-Ubuntu-python-3.11.15-pip-7ff4bfc652adc901be21aa27f270afeb26bde2bfc3f79d1756eb27304004cdb6
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.6093817Z (node:2314) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.8788836Z Received 24699748 of 24699748 (100.0%), 105.6 MBs/sec
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.8790253Z Cache Size: ~24 MB (24699748 B)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.8825411Z [command]/usr/bin/tar -xf /home/runner/work/_temp/6e4592c4-7751-4132-988b-3fc625c0640a/cache.tzst -P -C /home/runner/work/clinic-bot-19pol/clinic-bot-19pol --use-compress-program unzstd
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.9600954Z Cache restored successfully
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.9618497Z Cache restored from key: setup-python-Linux-x64-24.04-Ubuntu-python-3.11.15-pip-05ff3c4b0eaa2d0d79bbb4e78b90e26b926c5e7df8d4bca3b64ae02a36844579
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.9788039Z ##[group]Run python -m pip install --upgrade pip
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.9788476Z [36;1mpython -m pip install --upgrade pip[0m
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.9788814Z [36;1mpip install -r requirements.txt[0m
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.9822973Z shell: /usr/bin/bash -e {0}
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.9823253Z env:
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.9823544Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.9824014Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.9824497Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.9824907Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.9825319Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.9825728Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.9826076Z   VPN_FOUND: false
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:21.9826299Z ##[endgroup]
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:22.2877822Z Requirement already satisfied: pip in /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages (26.1.2)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:22.8109709Z Collecting fastapi (from -r requirements.txt (line 1))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:22.8126573Z   Using cached fastapi-0.139.0-py3-none-any.whl.metadata (26 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:22.8469797Z Collecting uvicorn (from -r requirements.txt (line 2))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:22.8485197Z   Using cached uvicorn-0.51.0-py3-none-any.whl.metadata (6.6 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:22.8700468Z Collecting aiogram (from -r requirements.txt (line 3))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:22.8714600Z   Using cached aiogram-3.29.1-py3-none-any.whl.metadata (6.8 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:22.8911790Z Collecting alembic (from -r requirements.txt (line 6))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:22.8926885Z   Using cached alembic-1.18.5-py3-none-any.whl.metadata (7.2 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:22.9045064Z Collecting pydantic-settings (from -r requirements.txt (line 7))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:22.9058968Z   Using cached pydantic_settings-2.14.2-py3-none-any.whl.metadata (3.4 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:22.9275275Z Collecting redis (from -r requirements.txt (line 8))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:22.9288466Z   Using cached redis-8.0.1-py3-none-any.whl.metadata (13 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:22.9488921Z Collecting sqladmin (from -r requirements.txt (line 9))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.0009897Z   Downloading sqladmin-0.29.0-py3-none-any.whl.metadata (5.3 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.0200648Z Collecting beautifulsoup4 (from -r requirements.txt (line 10))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.0223284Z   Using cached beautifulsoup4-4.15.0-py3-none-any.whl.metadata (3.8 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.0382515Z Collecting httpx (from -r requirements.txt (line 11))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.0396980Z   Using cached httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.0494045Z Collecting itsdangerous (from -r requirements.txt (line 12))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.0508106Z   Using cached itsdangerous-2.2.0-py3-none-any.whl.metadata (1.9 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.0630309Z Collecting jinja2 (from -r requirements.txt (line 13))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.0643895Z   Using cached jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.0749326Z Collecting python-multipart (from -r requirements.txt (line 14))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.0762625Z   Using cached python_multipart-0.0.32-py3-none-any.whl.metadata (2.1 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.3011768Z Collecting sqlalchemy[asyncio] (from -r requirements.txt (line 4))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.3028176Z   Using cached sqlalchemy-2.0.51-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (9.5 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.3206451Z Collecting psycopg[binary] (from -r requirements.txt (line 5))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.3219510Z   Using cached psycopg-3.3.4-py3-none-any.whl.metadata (4.3 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.3420097Z Collecting starlette>=0.46.0 (from fastapi->-r requirements.txt (line 1))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.3433972Z   Using cached starlette-1.3.1-py3-none-any.whl.metadata (6.4 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.4437400Z Collecting pydantic>=2.9.0 (from fastapi->-r requirements.txt (line 1))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.4452107Z   Using cached pydantic-2.13.4-py3-none-any.whl.metadata (109 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.4604627Z Collecting typing-extensions>=4.8.0 (from fastapi->-r requirements.txt (line 1))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.4617856Z   Using cached typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.4701222Z Collecting typing-inspection>=0.4.2 (from fastapi->-r requirements.txt (line 1))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.4714958Z   Using cached typing_inspection-0.4.2-py3-none-any.whl.metadata (2.6 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.4784701Z Collecting annotated-doc>=0.0.2 (from fastapi->-r requirements.txt (line 1))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.4797959Z   Using cached annotated_doc-0.0.4-py3-none-any.whl.metadata (6.6 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.4931336Z Collecting click>=7.0 (from uvicorn->-r requirements.txt (line 2))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.4944913Z   Using cached click-8.4.2-py3-none-any.whl.metadata (2.6 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.5025384Z Collecting h11>=0.8 (from uvicorn->-r requirements.txt (line 2))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.5039253Z   Using cached h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.5125918Z Collecting aiofiles<26.0,>=23.2.1 (from aiogram->-r requirements.txt (line 3))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.5138804Z   Using cached aiofiles-25.1.0-py3-none-any.whl.metadata (6.3 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.9516681Z Collecting aiohttp<3.15,>=3.9.0 (from aiogram->-r requirements.txt (line 3))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.9531963Z   Using cached aiohttp-3.14.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (8.3 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.9560732Z Requirement already satisfied: certifi>=2023.7.22 in /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages (from aiogram->-r requirements.txt (line 3)) (2026.6.17)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.9638870Z Collecting magic-filter<1.1,>=1.0.12 (from aiogram->-r requirements.txt (line 3))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.9651811Z   Using cached magic_filter-1.0.12-py3-none-any.whl.metadata (1.5 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.9816677Z Collecting aiohappyeyeballs>=2.5.0 (from aiohttp<3.15,>=3.9.0->aiogram->-r requirements.txt (line 3))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.9829639Z   Using cached aiohappyeyeballs-2.7.1-py3-none-any.whl.metadata (5.9 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.9907142Z Collecting aiosignal>=1.4.0 (from aiohttp<3.15,>=3.9.0->aiogram->-r requirements.txt (line 3))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:23.9920305Z   Using cached aiosignal-1.4.0-py3-none-any.whl.metadata (3.7 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:24.0029511Z Collecting attrs>=17.3.0 (from aiohttp<3.15,>=3.9.0->aiogram->-r requirements.txt (line 3))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:24.0042772Z   Using cached attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:24.0574738Z Collecting frozenlist>=1.1.1 (from aiohttp<3.15,>=3.9.0->aiogram->-r requirements.txt (line 3))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:24.0590028Z   Using cached frozenlist-1.8.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl.metadata (20 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:24.2438107Z Collecting multidict<7.0,>=4.5 (from aiohttp<3.15,>=3.9.0->aiogram->-r requirements.txt (line 3))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:24.2454049Z   Using cached multidict-6.7.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (5.3 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:24.3127123Z Collecting propcache>=0.2.0 (from aiohttp<3.15,>=3.9.0->aiogram->-r requirements.txt (line 3))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:24.3142000Z   Using cached propcache-0.5.2-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (16 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:24.5201881Z Collecting yarl<2.0,>=1.17.0 (from aiohttp<3.15,>=3.9.0->aiogram->-r requirements.txt (line 3))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:24.5218331Z   Using cached yarl-1.24.2-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (94 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:24.5360855Z Collecting annotated-types>=0.6.0 (from pydantic>=2.9.0->fastapi->-r requirements.txt (line 1))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:24.5376033Z   Using cached annotated_types-0.7.0-py3-none-any.whl.metadata (15 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.1563922Z Collecting pydantic-core==2.46.4 (from pydantic>=2.9.0->fastapi->-r requirements.txt (line 1))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.1580311Z   Using cached pydantic_core-2.46.4-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.6 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.1620051Z Requirement already satisfied: idna>=2.0 in /opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages (from yarl<2.0,>=1.17.0->aiohttp<3.15,>=3.9.0->aiogram->-r requirements.txt (line 3)) (3.18)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.2785785Z Collecting greenlet>=1 (from sqlalchemy[asyncio]->-r requirements.txt (line 4))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.2801505Z   Using cached greenlet-3.5.3-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata (3.8 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.4073125Z Collecting psycopg-binary==3.3.4 (from psycopg[binary]->-r requirements.txt (line 5))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.4089113Z   Using cached psycopg_binary-3.3.4-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.7 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.4225376Z Collecting Mako (from alembic->-r requirements.txt (line 6))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.4238926Z   Using cached mako-1.3.12-py3-none-any.whl.metadata (2.9 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.4390578Z Collecting python-dotenv>=0.21.0 (from pydantic-settings->-r requirements.txt (line 7))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.4404400Z   Using cached python_dotenv-1.2.2-py3-none-any.whl.metadata (27 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.4542008Z Collecting wtforms<3.3,>=3.1 (from sqladmin->-r requirements.txt (line 9))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.4555722Z   Using cached wtforms-3.2.2-py3-none-any.whl.metadata (4.9 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.4708464Z Collecting anyio<5,>=3.6.2 (from starlette>=0.46.0->fastapi->-r requirements.txt (line 1))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.4744545Z   Downloading anyio-4.14.2-py3-none-any.whl.metadata (4.6 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.5580339Z Collecting markupsafe>=1.1.1 (from wtforms<3.3,>=3.1->sqladmin->-r requirements.txt (line 9))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.5595826Z   Using cached markupsafe-3.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.7 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.5722325Z Collecting soupsieve>=1.6.1 (from beautifulsoup4->-r requirements.txt (line 10))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.5736534Z   Using cached soupsieve-2.8.4-py3-none-any.whl.metadata (4.6 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.5873145Z Collecting httpcore==1.* (from httpx->-r requirements.txt (line 11))
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.5887213Z   Using cached httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.6083709Z Using cached fastapi-0.139.0-py3-none-any.whl (130 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.6097476Z Using cached uvicorn-0.51.0-py3-none-any.whl (73 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.6110924Z Using cached aiogram-3.29.1-py3-none-any.whl (804 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.6127422Z Using cached aiofiles-25.1.0-py3-none-any.whl (14 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.6141165Z Using cached aiohttp-3.14.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (1.8 MB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.6160707Z Using cached magic_filter-1.0.12-py3-none-any.whl (11 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.6174483Z Using cached multidict-6.7.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (246 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.6188373Z Using cached pydantic-2.13.4-py3-none-any.whl (472 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.6203820Z Using cached pydantic_core-2.46.4-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.1 MB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.6224378Z Using cached typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.6238262Z Using cached yarl-1.24.2-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (106 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.6252272Z Using cached sqlalchemy-2.0.51-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (3.3 MB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.6279334Z Using cached psycopg-3.3.4-py3-none-any.whl (213 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.6293074Z Using cached psycopg_binary-3.3.4-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (5.2 MB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.6324510Z Using cached alembic-1.18.5-py3-none-any.whl (264 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.6338069Z Using cached pydantic_settings-2.14.2-py3-none-any.whl (61 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.6350953Z Using cached redis-8.0.1-py3-none-any.whl (502 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.6486303Z Downloading sqladmin-0.29.0-py3-none-any.whl (1.0 MB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.6762721Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.0/1.0 MB 72.5 MB/s  0:00:00
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.6776465Z Using cached starlette-1.3.1-py3-none-any.whl (73 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.6813823Z Downloading anyio-4.14.2-py3-none-any.whl (125 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.6851946Z Using cached wtforms-3.2.2-py3-none-any.whl (158 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.6865729Z Using cached beautifulsoup4-4.15.0-py3-none-any.whl (109 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.6879071Z Using cached httpx-0.28.1-py3-none-any.whl (73 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.6892207Z Using cached httpcore-1.0.9-py3-none-any.whl (78 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.6905948Z Using cached itsdangerous-2.2.0-py3-none-any.whl (16 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.6919365Z Using cached jinja2-3.1.6-py3-none-any.whl (134 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.6942063Z Using cached python_multipart-0.0.32-py3-none-any.whl (30 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.6969792Z Using cached aiohappyeyeballs-2.7.1-py3-none-any.whl (15 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.6990782Z Using cached aiosignal-1.4.0-py3-none-any.whl (7.5 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.7015550Z Using cached annotated_doc-0.0.4-py3-none-any.whl (5.3 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.7039330Z Using cached annotated_types-0.7.0-py3-none-any.whl (13 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.7061200Z Using cached attrs-26.1.0-py3-none-any.whl (67 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.7086019Z Using cached click-8.4.2-py3-none-any.whl (119 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.7109558Z Using cached frozenlist-1.8.0-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl (231 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.7122968Z Using cached greenlet-3.5.3-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (617 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.7145016Z Using cached h11-0.16.0-py3-none-any.whl (37 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.7158560Z Using cached markupsafe-3.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (22 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.7171639Z Using cached propcache-0.5.2-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (58 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.7184602Z Using cached python_dotenv-1.2.2-py3-none-any.whl (22 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.7197452Z Using cached soupsieve-2.8.4-py3-none-any.whl (37 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.7210399Z Using cached typing_inspection-0.4.2-py3-none-any.whl (14 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.7223169Z Using cached mako-1.3.12-py3-none-any.whl (78 kB)
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:25.8469789Z Installing collected packages: typing-extensions, soupsieve, redis, python-multipart, python-dotenv, psycopg-binary, propcache, multidict, markupsafe, magic-filter, itsdangerous, h11, greenlet, frozenlist, click, attrs, annotated-types, annotated-doc, aiohappyeyeballs, aiofiles, yarl, wtforms, uvicorn, typing-inspection, sqlalchemy, pydantic-core, psycopg, Mako, jinja2, httpcore, beautifulsoup4, anyio, aiosignal, starlette, pydantic, httpx, alembic, aiohttp, sqladmin, pydantic-settings, fastapi, aiogram
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:29.5872965Z 
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:29.5897399Z Successfully installed Mako-1.3.12 aiofiles-25.1.0 aiogram-3.29.1 aiohappyeyeballs-2.7.1 aiohttp-3.14.1 aiosignal-1.4.0 alembic-1.18.5 annotated-doc-0.0.4 annotated-types-0.7.0 anyio-4.14.2 attrs-26.1.0 beautifulsoup4-4.15.0 click-8.4.2 fastapi-0.139.0 frozenlist-1.8.0 greenlet-3.5.3 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 itsdangerous-2.2.0 jinja2-3.1.6 magic-filter-1.0.12 markupsafe-3.0.3 multidict-6.7.1 propcache-0.5.2 psycopg-3.3.4 psycopg-binary-3.3.4 pydantic-2.13.4 pydantic-core-2.46.4 pydantic-settings-2.14.2 python-dotenv-1.2.2 python-multipart-0.0.32 redis-8.0.1 soupsieve-2.8.4 sqladmin-0.29.0 sqlalchemy-2.0.51 starlette-1.3.1 typing-extensions-4.16.0 typing-inspection-0.4.2 uvicorn-0.51.0 wtforms-3.2.2 yarl-1.24.2
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:29.7329225Z ##[group]Run python -m app.scraper.tasks
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:29.7329614Z [36;1mpython -m app.scraper.tasks[0m
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:29.7363031Z shell: /usr/bin/bash -e {0}
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:29.7363299Z env:
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:29.7363578Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:29.7364049Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:29.7364507Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:29.7364915Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:29.7365315Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:29.7365717Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:29.7366063Z   VPN_FOUND: false
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:29.7366941Z   DATABASE_URL: ***
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:29.7367243Z   BOT_TOKEN: ***
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:29.7367848Z   REDIS_URL: ***
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:29.7368071Z   USE_PROXY_FALLBACK: 1
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:29.7368326Z ##[endgroup]
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:33.1401172Z INFO:__main__:Starting scraper loop task...
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:33.8968824Z INFO:__main__:--- Scraper Iteration 1 ---
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:33.9913864Z INFO:__main__:Starting single scrape iteration...
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:34.4473839Z INFO:app.scraper.parser:VPN not found. Fetching free proxies for fallback...
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:35.1499602Z INFO:httpx:HTTP Request: GET https://proxylist.geonode.com/api/proxy-list?country=BY&limit=10&protocols=http%2Chttps "HTTP/1.1 200 OK"
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:35.3918035Z INFO:httpx:HTTP Request: GET https://api.proxyscrape.com/v2/?request=displayproxies&protocol=http&timeout=10000&country=BY "HTTP/1.1 200 OK"
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:35.3926769Z INFO:app.scraper.parser:Found 3 free BY proxies.
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:35.3927948Z INFO:app.scraper.parser:Attempting to scrape using proxy: http://178.172.217.166:10811
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:51.8747921Z INFO:httpx:HTTP Request: GET http://self.19crp.by:8028/ticket/ "HTTP/1.0 502 Bad Gateway"
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:52.1225235Z WARNING:app.scraper.parser:Proxy http://178.172.217.166:10811 failed or blocked: Server error '502 Bad Gateway' for url 'http://self.19crp.by:8028/ticket/'
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:52.1226721Z For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502
+run-scraper	UNKNOWN STEP	2026-07-15T11:11:52.1227764Z INFO:app.scraper.parser:Attempting to scrape using proxy: http://91.149.142.139:8080
+run-scraper	UNKNOWN STEP	2026-07-15T11:12:22.1905275Z WARNING:app.scraper.parser:Proxy http://91.149.142.139:8080 failed or blocked: 
+run-scraper	UNKNOWN STEP	2026-07-15T11:12:22.1906330Z INFO:app.scraper.parser:Attempting to scrape using proxy: http://178.172.217.166:10818
+run-scraper	UNKNOWN STEP	2026-07-15T11:12:27.4719607Z INFO:httpx:HTTP Request: GET http://self.19crp.by:8028/ticket/ "HTTP/1.1 503 Service Unavailable"
+run-scraper	UNKNOWN STEP	2026-07-15T11:12:27.4727905Z WARNING:app.scraper.parser:Proxy http://178.172.217.166:10818 failed or blocked: Server error '503 Service Unavailable' for url 'http://self.19crp.by:8028/ticket/'
+run-scraper	UNKNOWN STEP	2026-07-15T11:12:27.4729891Z For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503
+run-scraper	UNKNOWN STEP	2026-07-15T11:12:27.4730736Z ERROR:app.scraper.parser:All proxies failed to connect.
+run-scraper	UNKNOWN STEP	2026-07-15T11:12:27.4737480Z WARNING:__main__:Scraping returned empty state (possibly all proxies failed). Skipping sync.
+run-scraper	UNKNOWN STEP	2026-07-15T11:12:27.4773650Z INFO:__main__:Waiting 120 seconds for the next scrape iteration...
+run-scraper	UNKNOWN STEP	2026-07-15T11:14:27.5777289Z INFO:__main__:--- Scraper Iteration 2 ---
+run-scraper	UNKNOWN STEP	2026-07-15T11:14:27.6733837Z INFO:__main__:Starting single scrape iteration...
+run-scraper	UNKNOWN STEP	2026-07-15T11:14:28.1453505Z INFO:app.scraper.parser:VPN not found. Fetching free proxies for fallback...
+run-scraper	UNKNOWN STEP	2026-07-15T11:14:28.7890560Z INFO:httpx:HTTP Request: GET https://proxylist.geonode.com/api/proxy-list?country=BY&limit=10&protocols=http%2Chttps "HTTP/1.1 200 OK"
+run-scraper	UNKNOWN STEP	2026-07-15T11:14:28.8508802Z INFO:httpx:HTTP Request: GET https://api.proxyscrape.com/v2/?request=displayproxies&protocol=http&timeout=10000&country=BY "HTTP/1.1 200 OK"
+run-scraper	UNKNOWN STEP	2026-07-15T11:14:28.8514967Z INFO:app.scraper.parser:Found 3 free BY proxies.
+run-scraper	UNKNOWN STEP	2026-07-15T11:14:28.8516502Z INFO:app.scraper.parser:Attempting to scrape using proxy: http://178.172.217.166:10811
+run-scraper	UNKNOWN STEP	2026-07-15T11:14:47.8113154Z INFO:httpx:HTTP Request: GET http://self.19crp.by:8028/ticket/ "HTTP/1.0 502 Bad Gateway"
+run-scraper	UNKNOWN STEP	2026-07-15T11:14:47.8121396Z WARNING:app.scraper.parser:Proxy http://178.172.217.166:10811 failed or blocked: Server error '502 Bad Gateway' for url 'http://self.19crp.by:8028/ticket/'
+run-scraper	UNKNOWN STEP	2026-07-15T11:14:47.8122730Z For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502
+run-scraper	UNKNOWN STEP	2026-07-15T11:14:47.8123510Z INFO:app.scraper.parser:Attempting to scrape using proxy: http://91.149.142.139:8080
+run-scraper	UNKNOWN STEP	2026-07-15T11:15:17.8786035Z WARNING:app.scraper.parser:Proxy http://91.149.142.139:8080 failed or blocked: 
+run-scraper	UNKNOWN STEP	2026-07-15T11:15:17.8786962Z INFO:app.scraper.parser:Attempting to scrape using proxy: http://178.172.217.166:10818
+run-scraper	UNKNOWN STEP	2026-07-15T11:15:37.4936615Z INFO:httpx:HTTP Request: GET http://self.19crp.by:8028/ticket/ "HTTP/1.0 502 Bad Gateway"
+run-scraper	UNKNOWN STEP	2026-07-15T11:15:37.4947200Z WARNING:app.scraper.parser:Proxy http://178.172.217.166:10818 failed or blocked: Server error '502 Bad Gateway' for url 'http://self.19crp.by:8028/ticket/'
+run-scraper	UNKNOWN STEP	2026-07-15T11:15:37.4948379Z For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502
+run-scraper	UNKNOWN STEP	2026-07-15T11:15:37.4949083Z ERROR:app.scraper.parser:All proxies failed to connect.
+run-scraper	UNKNOWN STEP	2026-07-15T11:15:37.4954926Z WARNING:__main__:Scraping returned empty state (possibly all proxies failed). Skipping sync.
+run-scraper	UNKNOWN STEP	2026-07-15T11:15:37.4990894Z INFO:__main__:Waiting 120 seconds for the next scrape iteration...
+run-scraper	UNKNOWN STEP	2026-07-15T11:17:37.5994223Z INFO:__main__:--- Scraper Iteration 3 ---
+run-scraper	UNKNOWN STEP	2026-07-15T11:17:37.6947109Z INFO:__main__:Starting single scrape iteration...
+run-scraper	UNKNOWN STEP	2026-07-15T11:17:38.1977124Z INFO:app.scraper.parser:VPN not found. Fetching free proxies for fallback...
+run-scraper	UNKNOWN STEP	2026-07-15T11:17:38.9116270Z INFO:httpx:HTTP Request: GET https://proxylist.geonode.com/api/proxy-list?country=BY&limit=10&protocols=http%2Chttps "HTTP/1.1 200 OK"
+run-scraper	UNKNOWN STEP	2026-07-15T11:17:39.2641183Z INFO:httpx:HTTP Request: GET https://api.proxyscrape.com/v2/?request=displayproxies&protocol=http&timeout=10000&country=BY "HTTP/1.1 200 OK"
+run-scraper	UNKNOWN STEP	2026-07-15T11:17:39.2648824Z INFO:app.scraper.parser:Found 3 free BY proxies.
+run-scraper	UNKNOWN STEP	2026-07-15T11:17:39.2649737Z INFO:app.scraper.parser:Attempting to scrape using proxy: http://178.172.217.166:10811
+run-scraper	UNKNOWN STEP	2026-07-15T11:17:58.5520533Z INFO:httpx:HTTP Request: GET http://self.19crp.by:8028/ticket/ "HTTP/1.0 502 Bad Gateway"
+run-scraper	UNKNOWN STEP	2026-07-15T11:17:58.7994360Z WARNING:app.scraper.parser:Proxy http://178.172.217.166:10811 failed or blocked: Server error '502 Bad Gateway' for url 'http://self.19crp.by:8028/ticket/'
+run-scraper	UNKNOWN STEP	2026-07-15T11:17:58.7996335Z For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502
+run-scraper	UNKNOWN STEP	2026-07-15T11:17:58.7997632Z INFO:app.scraper.parser:Attempting to scrape using proxy: http://91.149.142.139:8080
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:28.8362840Z WARNING:app.scraper.parser:Proxy http://91.149.142.139:8080 failed or blocked: 
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:28.8364116Z INFO:app.scraper.parser:Attempting to scrape using proxy: http://178.172.217.166:10818
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:29.3166009Z INFO:httpx:HTTP Request: GET http://self.19crp.by:8028/ticket/ "HTTP/1.0 502 Bad Gateway"
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:29.3174504Z WARNING:app.scraper.parser:Proxy http://178.172.217.166:10818 failed or blocked: Server error '502 Bad Gateway' for url 'http://self.19crp.by:8028/ticket/'
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:29.3176033Z For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:29.3176840Z ERROR:app.scraper.parser:All proxies failed to connect.
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:29.3183377Z WARNING:__main__:Scraping returned empty state (possibly all proxies failed). Skipping sync.
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:29.4196947Z INFO:__main__:Scraper loop task finished.
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:29.7401550Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:29.7403133Z Post job cleanup.
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:29.8603979Z (node:2507) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:29.8604871Z (Use `node --trace-deprecation ...` to show where the warning was created)
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:29.8818037Z [command]/usr/bin/tar --posix -cf cache.tzst --exclude cache.tzst -P -C /home/runner/work/clinic-bot-19pol/clinic-bot-19pol --files-from manifest.txt --use-compress-program zstdmt
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:30.1021567Z (node:2507) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:30.4807216Z Sent 25596282 of 25596282 (100.0%), 62.9 MBs/sec
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:30.5908543Z Cache saved with the key: setup-python-Linux-x64-24.04-Ubuntu-python-3.11.15-pip-7ff4bfc652adc901be21aa27f270afeb26bde2bfc3f79d1756eb27304004cdb6
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:30.6036704Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:30.6037989Z Post job cleanup.
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:30.7208120Z (node:2527) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:30.7209461Z (Use `node --trace-deprecation ...` to show where the warning was created)
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:30.7390465Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:30.7392883Z Post job cleanup.
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:30.8251774Z [command]/usr/bin/git version
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:30.8293863Z git version 2.54.0
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:30.8334074Z Temporarily overriding HOME='/home/runner/work/_temp/fcfd8209-07e4-4671-974b-ef37539823c2' before making global git config changes
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:30.8335660Z Adding repository directory to the temporary git global config as a safe directory
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:30.8340594Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/clinic-bot-19pol/clinic-bot-19pol
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:30.8381305Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:30.8441717Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:30.8723961Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:30.8754371Z http.https://github.com/.extraheader
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:30.8776260Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:30.8815435Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:30.9062831Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:30.9105286Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:30.9490471Z Cleaning up orphan processes
+run-scraper	UNKNOWN STEP	2026-07-15T11:18:30.9777356Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

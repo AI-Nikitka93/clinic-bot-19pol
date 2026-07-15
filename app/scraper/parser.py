@@ -150,18 +150,18 @@ async def scrape_all_tickets(use_proxy_fallback: bool = False) -> Dict[str, Any]
     
     proxies_to_try = [None]
     if use_proxy_fallback:
-        logger.info("VPN not found. Fetching free proxies for fallback...")
+        logger.info("VPN not found. Will try direct connection first, then free proxies...")
         free_proxies = await fetch_free_proxies()
         logger.info(f"Found {len(free_proxies)} free BY proxies.")
-        if free_proxies:
-            proxies_to_try = free_proxies
-        else:
-            logger.error("No free proxies found. Cannot proceed without BY IP.")
-            return {}
+        proxies_to_try.extend(free_proxies)
 
     for proxy in proxies_to_try:
         try:
-            logger.info(f"Attempting to scrape using proxy: {proxy}")
+            if proxy is None:
+                logger.info("Attempting to scrape using direct connection (No Proxy / OS VPN)...")
+            else:
+                logger.info(f"Attempting to scrape using proxy: {proxy}")
+                
             async with httpx.AsyncClient(timeout=30.0, proxy=proxy) as client:
                 # Test connection first
                 await fetch_html(client, BASE_URL)
