@@ -62,8 +62,7 @@ async def run_single_scrape():
                 if spec_ext_id not in specialties:
                     spec = Specialty(source_id=source.id, external_id=spec_ext_id, name=spec_name)
                     session.add(spec)
-                    await session.commit()
-                    await session.refresh(spec)
+                    await session.flush()
                     specialties[spec_ext_id] = spec
                 
                 for doc_name, doc_data in spec_data["doctors"].items():
@@ -71,8 +70,7 @@ async def run_single_scrape():
                     if doc_ext_id not in doctors:
                         doc = Doctor(specialty_id=specialties[spec_ext_id].id, external_id=doc_ext_id, full_name=doc_name)
                         session.add(doc)
-                        await session.commit()
-                        await session.refresh(doc)
+                        await session.flush()
                         doctors[doc_ext_id] = doc
 
             # Create helper mapping for doctor database IDs
@@ -173,8 +171,15 @@ async def run_single_scrape():
                 # Pre-fetch all doctors and specialties mapping for fast lookup
                 # (We already have doctors_by_id and specialties dictionary)
                 
+                tickets_by_doctor = {}
                 for nt in new_tickets_to_notify:
-                    doc = doctors_by_id.get(nt["doctor_id"])
+                    doc_id = nt["doctor_id"]
+                    if doc_id not in tickets_by_doctor:
+                        tickets_by_doctor[doc_id] = []
+                    tickets_by_doctor[doc_id].append(nt)
+
+                for doc_id, doc_tickets in tickets_by_doctor.items():
+                    doc = doctors_by_id.get(doc_id)
                     if not doc: continue
                     
                     # Find specialty
@@ -197,13 +202,19 @@ async def run_single_scrape():
                     if not subscribers:
                         continue
                         
-                    msg = (
-                        f"🔔 Новый свободный талон!\n"
-                        f"👨‍⚕️ Врач: {doc.full_name}\n"
-                        f"🩺 Специальность: {spec.name}\n"
-                        f"📅 Дата: {nt['date'].strftime('%d.%m.%Y')} в {nt['time'].strftime('%H:%M')}\n"
-                        f"🔗 Записаться: http://self.19crp.by:8028/ticket/"
-                    )
+                    msg = f"🔔 Новые свободные талоны ({len(doc_tickets)})!\n"
+                    msg += f"👨‍⚕️ Врач: {doc.full_name}\n"
+                    msg += f"🩺 Специальность: {spec.name}\n"
+                    msg += f"📅 Даты:\n"
+                    
+                    doc_tickets.sort(key=lambda x: (x['date'], x['time']))
+                    for i, t in enumerate(doc_tickets):
+                        msg += f"   - {t['date'].strftime('%d.%m.%Y')} в {t['time'].strftime('%H:%M')}\n"
+                        if i >= 19:
+                            msg += f"   (и еще {len(doc_tickets) - 20} талонов)\n"
+                            break
+                            
+                    msg += f"\n🔗 Записаться: http://self.19crp.by:8028/ticket/"
                     
                     for sub, user in subscribers:
                         try:

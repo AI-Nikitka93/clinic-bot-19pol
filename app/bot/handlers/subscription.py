@@ -73,7 +73,11 @@ async def process_filters(callback: types.CallbackQuery, state: FSMContext):
     data = await state.get_data()
     async with AsyncSessionLocal() as session:
         result = await session.execute(select(User).where(User.telegram_id == callback.from_user.id))
-        user = result.scalar_one()
+        user = result.scalar_one_or_none()
+        if not user:
+            await callback.message.answer("Пользователь не найден. Пожалуйста, перезапустите бота командой /start")
+            await state.clear()
+            return
         
         sub = Subscription(
             user_id=user.id,
@@ -115,6 +119,15 @@ async def del_subscription(callback: types.CallbackQuery):
             await session.commit()
             if res.rowcount > 0:
                 await callback.answer("Подписка удалена")
-                await callback.message.edit_text("✅ Подписка успешно удалена.")
+                sub_res = await session.execute(
+                    select(Subscription)
+                    .where(Subscription.user_id == user.id)
+                    .options(selectinload(Subscription.specialty), selectinload(Subscription.doctor))
+                )
+                subs = sub_res.scalars().all()
+                if not subs:
+                    await callback.message.edit_text("У вас больше нет активных подписок.")
+                else:
+                    await callback.message.edit_reply_markup(reply_markup=get_subscriptions_kb(subs))
                 return
     await callback.answer("Ошибка: подписка не найдена или нет прав", show_alert=True)
